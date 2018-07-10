@@ -54,6 +54,10 @@ public class Preprocessors {
     };
   }
   
+  public static JsonNode replaceLatex(String str) {
+    return JsonNode.buildFrom( innerReplaceLatex( JsonNode.readFrom(str) ) );
+  }
+  
   /// Private helpers
   
   private static Object innerReflection(JsonNode model) {
@@ -168,5 +172,35 @@ public class Preprocessors {
     } else {
       return obj.as(ValueNode.class).map( ValueNode::value ).orElse(obj);
     }
+  }
+  private static Object innerReplaceLatex(JsonNode node) {
+    Function<String,String> sanitizeString = str ->
+      str
+        .replaceAll("\\\\cdot", "*") // escaped twice, for java parser and regex parser
+        .replaceAll("(?<!=)=(?!=)", "==") // replace single = with double ==
+        .replaceAll("\\^", "**")
+      ;
+    
+    return Utils.firstPresent(
+        () -> node.as(ValueNode.class)
+          .map( ValueNode::asText )
+          .map( sanitizeString ),
+        () -> node.as(ObjectNode.class)
+          .map( onode -> {
+            JSONObject output = new JSONObject();
+            onode.entries().stream()
+              .map(onValue( Preprocessors::innerReplaceLatex ))
+              .forEach(consumeEntry( output::put ));
+            return output;
+          }),
+        () -> node.as(ArrayNode.class)
+          .map( anode -> {
+            JSONArray output = new JSONArray();
+            anode.values().stream()
+              .map( Preprocessors::innerReplaceLatex )
+              .forEach( output::put );
+            return output;
+          })
+        ).orElseGet( () -> node.toJSON() );
   }
 }

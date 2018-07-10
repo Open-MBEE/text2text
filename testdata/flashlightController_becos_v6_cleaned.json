@@ -1,0 +1,2498 @@
+{
+  "entities": [
+    {
+      "graphUUID": null,
+      "id": "92f1b5e3-8bc0-42ed-94ae-9c87826a27e8",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/mission/mission#Component",
+      "name": "Battery",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "f3ec1188-e6ef-4fe5-93ad-f8ba6f876d7f",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/mission/mission#Component",
+      "name": "Lamp",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "0ab1fe76-78f9-4c78-972d-d2edc54cada3",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/mission/mission#Component",
+      "name": "Switch",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "f80f3db0-c5d8-440f-8366-0bd5d9e02b6c",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/mission/mission#Component",
+      "name": "Controller",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "93c6e143-6466-49d9-af58-84ead2277572",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Parameter",
+      "name": "Nominal_Voltage",
+      "description": "",
+      "attributes": [
+        {
+          "name": "quantity kind",
+          "type": "quantity kind",
+          "value": "electric power"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "value": "10"
+        },
+        {
+          "name": "units",
+          "type": "units",
+          "value": "volt"
+        },
+        {
+          "name": "symbol",
+          "type": "string",
+          "value": "V"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "82b795ae-1af5-4b93-901d-5a963cc07d94",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#StateVariable",
+      "name": "VoltageAcrossBattery",
+      "description": "",
+      "attributes": [
+        {
+          "name": "quantity kind",
+          "type": "quantity kind",
+          "value": "voltage"
+        },
+        {
+          "name": "units",
+          "type": "units",
+          "value": ""
+        },
+        {
+          "name": "symbol",
+          "type": "string",
+          "value": "deltaV"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "c04d7def-d6bc-442d-a1b8-19ae6774e46d",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#StateVariable",
+      "name": "CurrentThroughBattery",
+      "description": "",
+      "attributes": [
+        {
+          "name": "quantity kind",
+          "type": "quantity kind",
+          "value": "electric current"
+        },
+        {
+          "name": "units",
+          "type": "units",
+          "value": ""
+        },
+        {
+          "name": "symbol",
+          "type": "string",
+          "value": "i"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "e8fddfde-0952-4a8a-8c4e-0b7677989f74",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#ElementBehavior",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": [
+        {
+          "name": "expression",
+          "type": "string",
+          "value": ";s93c6e143-6466-49d9-af58-84ead2277572;e=;s82b795ae-1af5-4b93-901d-5a963cc07d94;e"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "60633841-3765-469f-ac30-c4b46afd4a92",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Parameter",
+      "name": "Ohmic Resistance",
+      "description": "",
+      "attributes": [
+        {
+          "name": "quantity kind",
+          "type": "quantity kind",
+          "value": "electrical resistance"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "value": "50"
+        },
+        {
+          "name": "units",
+          "type": "units",
+          "value": "ohm"
+        },
+        {
+          "name": "symbol",
+          "type": "string",
+          "value": "R"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "30875510-ffff-4e5f-8371-45360b540367",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Parameter",
+      "name": "Luminous efficacy",
+      "description": "",
+      "attributes": [
+        {
+          "name": "quantity kind",
+          "type": "quantity kind",
+          "value": "one"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "value": "4"
+        },
+        {
+          "name": "units",
+          "type": "units",
+          "value": "one"
+        },
+        {
+          "name": "symbol",
+          "type": "string",
+          "value": "eta"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "ddf1e8aa-eeca-46d6-a5c0-e979dabac0c1",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#StateVariable",
+      "name": "Lumen Output",
+      "description": "",
+      "attributes": [
+        {
+          "name": "quantity kind",
+          "type": "quantity kind",
+          "value": "one"
+        },
+        {
+          "name": "units",
+          "type": "units",
+          "value": ""
+        },
+        {
+          "name": "symbol",
+          "type": "string",
+          "value": "L"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "c671bd81-0192-4244-b7b5-d32db9adac78",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#StateVariable",
+      "name": "VoltageAcrossLamp",
+      "description": "",
+      "attributes": [
+        {
+          "name": "quantity kind",
+          "type": "quantity kind",
+          "value": "voltage"
+        },
+        {
+          "name": "units",
+          "type": "units",
+          "value": ""
+        },
+        {
+          "name": "symbol",
+          "type": "string",
+          "value": "deltaV"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "75a9e80d-6d2e-421c-b9e6-45e465a193a4",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#StateVariable",
+      "name": "CurrentThroughLamp",
+      "description": "",
+      "attributes": [
+        {
+          "name": "quantity kind",
+          "type": "quantity kind",
+          "value": "electric power"
+        },
+        {
+          "name": "units",
+          "type": "units",
+          "value": ""
+        },
+        {
+          "name": "symbol",
+          "type": "string",
+          "value": "i"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "59123556-2f60-41c2-ac89-74d45f4b8416",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#ElementBehavior",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": [
+        {
+          "name": "expression",
+          "type": "string",
+          "value": ";sddf1e8aa-eeca-46d6-a5c0-e979dabac0c1;e=;sc671bd81-0192-4244-b7b5-d32db9adac78;e\\cdot ;s75a9e80d-6d2e-421c-b9e6-45e465a193a4;e\\cdot ;s30875510-ffff-4e5f-8371-45360b540367;e"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "bc44add2-8099-41e3-8671-fd1d2b805494",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#StateVariable",
+      "name": "VoltageAcrossSwitch",
+      "description": "",
+      "attributes": [
+        {
+          "name": "quantity kind",
+          "type": "quantity kind",
+          "value": "voltage"
+        },
+        {
+          "name": "units",
+          "type": "units",
+          "value": ""
+        },
+        {
+          "name": "symbol",
+          "type": "string",
+          "value": "deltaV"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "72eaf390-6dad-493c-94a4-101eeea38b46",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#StateVariable",
+      "name": "CurrentThroughSwitch",
+      "description": "",
+      "attributes": [
+        {
+          "name": "quantity kind",
+          "type": "quantity kind",
+          "value": "electric current"
+        },
+        {
+          "name": "units",
+          "type": "units",
+          "value": ""
+        },
+        {
+          "name": "symbol",
+          "type": "string",
+          "value": "i"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "f0c4402f-b398-48f2-ba9c-021efb436662",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#StateVariable",
+      "name": "SwitchPosition",
+      "description": "",
+      "attributes": [
+        {
+          "name": "quantity kind",
+          "type": "quantity kind",
+          "value": "StateMachine"
+        },
+        {
+          "name": "units",
+          "type": "units",
+          "value": ""
+        },
+        {
+          "name": "symbol",
+          "type": "string",
+          "value": "Ps"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "9ef4dc79-66ee-4958-b619-46ea41768787",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#StateVariable",
+      "name": "ControllerState",
+      "description": "",
+      "attributes": [
+        {
+          "name": "quantity kind",
+          "type": "quantity kind",
+          "value": "StateMachine"
+        },
+        {
+          "name": "units",
+          "type": "units",
+          "value": ""
+        },
+        {
+          "name": "symbol",
+          "type": "string",
+          "value": "Cstate"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "3ac213c2-f5e8-48a5-a872-bad874b274d2",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Interaction",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "1444b88d-4012-4b9b-b3ea-fb748d910bee",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#InteractionBehavior",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": [
+        {
+          "name": "expression",
+          "type": "string",
+          "value": ";s72eaf390-6dad-493c-94a4-101eeea38b46;e=;sc04d7def-d6bc-442d-a1b8-19ae6774e46d;e"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "871f03b0-60fe-4a0c-aa1c-86b1554edee7",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#StateMachine",
+      "name": "Switch",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "25cd21a8-e6b8-4179-8979-1610f745c383",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#State",
+      "name": "Closed",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "position": {
+          "x": 158.25,
+          "y": 103
+        }
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "ef3d41e8-17c6-4d96-b1eb-b1934e92446f",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#State",
+      "name": "Open",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "position": {
+          "x": 655,
+          "y": 146
+        }
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "3a18c629-7139-4892-9c49-72015a0da468",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#StateBehavior",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": [
+        {
+          "name": "expression",
+          "type": "string",
+          "value": ";sbc44add2-8099-41e3-8671-fd1d2b805494;e=0"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "8dae5bc9-db19-478e-8eab-784169adefeb",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#StateBehavior",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": [
+        {
+          "name": "expression",
+          "type": "string",
+          "value": ";s72eaf390-6dad-493c-94a4-101eeea38b46;e=0"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "b7e79543-009a-4cbd-ad17-970f46df1a51",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Transition",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": [
+        {
+          "name": "sourceID",
+          "type": "string",
+          "value": "25cd21a8-e6b8-4179-8979-1610f745c383"
+        },
+        {
+          "name": "targetID",
+          "type": "string",
+          "value": "ef3d41e8-17c6-4d96-b1eb-b1934e92446f"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "d95ca6b3-d5be-4e81-8816-57e29b10fa9a",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Transition",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": [
+        {
+          "name": "sourceID",
+          "type": "string",
+          "value": "ef3d41e8-17c6-4d96-b1eb-b1934e92446f"
+        },
+        {
+          "name": "targetID",
+          "type": "string",
+          "value": "25cd21a8-e6b8-4179-8979-1610f745c383"
+        }
+      ],
+      "d3attributes": {
+        "controlPoint2": {
+          "offsetX": -335.75,
+          "offsetY": -85
+        },
+        "controlPoint1": {
+          "offsetX": -113.75,
+          "offsetY": -88
+        }
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "105fdc2a-4b0b-4a22-9825-163192459ca6",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Trigger",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": [
+        {
+          "name": "expression",
+          "type": "string",
+          "value": "CLOSE"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "7d8c0ae2-760f-4aa3-b9cb-c3db227c36cb",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Guard",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": [
+        {
+          "name": "expression",
+          "type": "string",
+          "value": ";sbc44add2-8099-41e3-8671-fd1d2b805494;e>0"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "f94b4e52-f52c-4c73-8eca-669b455674cb",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Trigger",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": [
+        {
+          "name": "expression",
+          "type": "string",
+          "value": "OPEN"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "30208b9b-1b1d-4258-a6ea-dd6513d7930a",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Guard",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": [
+        {
+          "name": "expression",
+          "type": "string",
+          "value": ";s72eaf390-6dad-493c-94a4-101eeea38b46;e>0"
+        }
+      ]
+    },
+    {
+      "graphUUID": null,
+      "id": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Rule",
+      "name": "LampON",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "swimlane_e6669ea2-1b24-4f1c-b930-4658459f83c2",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#ExecutionContext",
+      "name": "Switch",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 10,
+        "y": 0,
+        "width": 3980,
+        "height": 0,
+        "label": "Switch",
+        "behavingElementID": "0ab1fe76-78f9-4c78-972d-d2edc54cada3"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "swimlane_49b12fc2-8096-4d03-b2a9-655dfd942970",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#ExecutionContext",
+      "name": "Controller",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 10,
+        "y": 0,
+        "width": 3980,
+        "height": 0,
+        "label": "Controller",
+        "behavingElementID": "f80f3db0-c5d8-440f-8366-0bd5d9e02b6c"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "timepoint_8e8d53cb-4c27-4b8a-98f3-ccacafbd4830",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#TimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 74.515625,
+        "y": 323,
+        "hasConstraint": false,
+        "behavingElementID": "f80f3db0-c5d8-440f-8366-0bd5d9e02b6c"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "timepoint_f0a37dc6-8186-4bbd-86c1-6ac67c6c2a2a",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#TimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 1102.515625,
+        "y": 320,
+        "hasConstraint": false,
+        "behavingElementID": "f80f3db0-c5d8-440f-8366-0bd5d9e02b6c"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "activity_00f3ba72-3a41-439b-8bcc-b0e5ed77e13d",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Activity",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 187.515625,
+        "y": 368,
+        "hasConstraint": false,
+        "behavingElementID": "f80f3db0-c5d8-440f-8366-0bd5d9e02b6c"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "start_activity_00f3ba72-3a41-439b-8bcc-b0e5ed77e13d",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StartTimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 147.515625,
+        "y": 368,
+        "hasConstraint": false
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "end_activity_00f3ba72-3a41-439b-8bcc-b0e5ed77e13d",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EndTimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 227.515625,
+        "y": 368,
+        "hasConstraint": false
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "activity_e4d3d7d5-4b6f-43ae-9e3a-2a88368fccbe",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Activity",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 254.515625,
+        "y": 122,
+        "hasConstraint": false,
+        "behavingElementID": "0ab1fe76-78f9-4c78-972d-d2edc54cada3"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "start_activity_e4d3d7d5-4b6f-43ae-9e3a-2a88368fccbe",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StartTimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 214.515625,
+        "y": 122,
+        "hasConstraint": false
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "end_activity_e4d3d7d5-4b6f-43ae-9e3a-2a88368fccbe",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EndTimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 294.515625,
+        "y": 122,
+        "hasConstraint": false
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "timepoint_7231fd06-2e87-4a68-b099-908ec93fd43b",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#TimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 497.515625,
+        "y": 324,
+        "hasConstraint": false,
+        "behavingElementID": "f80f3db0-c5d8-440f-8366-0bd5d9e02b6c"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "timepoint_336cd60f-631d-4bd3-9498-97bc642954f3",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#TimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 802.515625,
+        "y": 370,
+        "hasConstraint": false,
+        "behavingElementID": "f80f3db0-c5d8-440f-8366-0bd5d9e02b6c"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "activity_4deacecc-ef5b-4183-a219-d9ab26887236",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Activity",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 393.515625,
+        "y": 432,
+        "hasConstraint": false,
+        "behavingElementID": "f80f3db0-c5d8-440f-8366-0bd5d9e02b6c"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "start_activity_4deacecc-ef5b-4183-a219-d9ab26887236",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StartTimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 353.515625,
+        "y": 432,
+        "hasConstraint": false
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "end_activity_4deacecc-ef5b-4183-a219-d9ab26887236",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EndTimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 433.515625,
+        "y": 432,
+        "hasConstraint": false
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "activity_4d3ffbc1-e85d-4843-868b-63a8b7d9e1a6",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Activity",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 657.515625,
+        "y": 414,
+        "hasConstraint": false,
+        "behavingElementID": "f80f3db0-c5d8-440f-8366-0bd5d9e02b6c"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "start_activity_4d3ffbc1-e85d-4843-868b-63a8b7d9e1a6",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StartTimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 617.515625,
+        "y": 414,
+        "hasConstraint": false
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "end_activity_4d3ffbc1-e85d-4843-868b-63a8b7d9e1a6",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EndTimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 697.515625,
+        "y": 414,
+        "hasConstraint": false
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "activity_843b3bb3-56cf-4760-8209-7aa5efdfbf25",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Activity",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 929.515625,
+        "y": 343,
+        "hasConstraint": false,
+        "behavingElementID": "f80f3db0-c5d8-440f-8366-0bd5d9e02b6c"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "start_activity_843b3bb3-56cf-4760-8209-7aa5efdfbf25",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StartTimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 889.515625,
+        "y": 343,
+        "hasConstraint": false
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "end_activity_843b3bb3-56cf-4760-8209-7aa5efdfbf25",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EndTimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 969.515625,
+        "y": 343,
+        "hasConstraint": false
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Activity",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 640.515625,
+        "y": 120,
+        "hasConstraint": false,
+        "behavingElementID": "0ab1fe76-78f9-4c78-972d-d2edc54cada3"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "start_activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StartTimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 600.515625,
+        "y": 120,
+        "hasConstraint": false
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "end_activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EndTimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 680.515625,
+        "y": 120,
+        "hasConstraint": false
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Activity",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 920.515625,
+        "y": 116,
+        "hasConstraint": false,
+        "behavingElementID": "0ab1fe76-78f9-4c78-972d-d2edc54cada3"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "start_activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StartTimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 880.515625,
+        "y": 116,
+        "hasConstraint": false
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "end_activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EndTimePoint",
+      "name": "",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 960.515625,
+        "y": 116,
+        "hasConstraint": false
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "edge_888c2053-bfbe-453a-b23c-e2486218b282",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EqualsTemporalConstraint",
+      "name": "Edge",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 74,
+        "y": 323,
+        "endX": 147,
+        "endY": 368,
+        "sourceID": "timepoint_8e8d53cb-4c27-4b8a-98f3-ccacafbd4830",
+        "targetID": "start_activity_00f3ba72-3a41-439b-8bcc-b0e5ed77e13d",
+        "type": "equalsArrow",
+        "shift": "center"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "edge_10fbd64e-34da-4725-b2c5-954dae17f08f",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EqualsTemporalConstraint",
+      "name": "Edge",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 74,
+        "y": 323,
+        "endX": 214,
+        "endY": 122,
+        "sourceID": "timepoint_8e8d53cb-4c27-4b8a-98f3-ccacafbd4830",
+        "targetID": "start_activity_e4d3d7d5-4b6f-43ae-9e3a-2a88368fccbe",
+        "type": "equalsArrow",
+        "shift": "center"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "edge_30b96204-cf77-4d57-831d-159216747adb",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EqualsTemporalConstraint",
+      "name": "Edge",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 497,
+        "y": 324,
+        "endX": 617,
+        "endY": 414,
+        "sourceID": "timepoint_7231fd06-2e87-4a68-b099-908ec93fd43b",
+        "targetID": "start_activity_4d3ffbc1-e85d-4843-868b-63a8b7d9e1a6",
+        "type": "equalsArrow",
+        "shift": "center"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "edge_b9eb77ab-923d-46a4-bfc0-11159a779e6a",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EqualsTemporalConstraint",
+      "name": "Edge",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 497,
+        "y": 324,
+        "endX": 600,
+        "endY": 120,
+        "sourceID": "timepoint_7231fd06-2e87-4a68-b099-908ec93fd43b",
+        "targetID": "start_activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+        "type": "equalsArrow",
+        "shift": "center"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "edge_cbf52161-8a44-4f8b-9c01-40fe3f4ff6a7",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EqualsTemporalConstraint",
+      "name": "Edge",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 802,
+        "y": 370,
+        "endX": 889,
+        "endY": 343,
+        "sourceID": "timepoint_336cd60f-631d-4bd3-9498-97bc642954f3",
+        "targetID": "start_activity_843b3bb3-56cf-4760-8209-7aa5efdfbf25",
+        "type": "equalsArrow",
+        "shift": "center"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "edge_0b84df2d-bf94-4152-9ead-43ff4480ae1f",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EqualsTemporalConstraint",
+      "name": "Edge",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 802,
+        "y": 370,
+        "endX": 880,
+        "endY": 116,
+        "sourceID": "timepoint_336cd60f-631d-4bd3-9498-97bc642954f3",
+        "targetID": "start_activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+        "type": "equalsArrow",
+        "shift": "center"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "edge_b89be344-c615-4226-994c-aecc37ef7f0c",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#PrecedesTemporalConstraint",
+      "name": "Edge",
+      "description": "",
+      "attributes": [
+        {
+          "name": "min",
+          "type": "double",
+          "value": 5
+        },
+        {
+          "name": "max",
+          "type": "double",
+          "value": 5
+        }
+      ],
+      "d3attributes": {
+        "x": 227,
+        "y": 368,
+        "endX": 353,
+        "endY": 432,
+        "sourceID": "end_activity_00f3ba72-3a41-439b-8bcc-b0e5ed77e13d",
+        "targetID": "start_activity_4deacecc-ef5b-4183-a219-d9ab26887236",
+        "type": "precedesArrow",
+        "shift": "right"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "edge_490ac3ff-687a-4340-abd8-d88714bfa325",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#PrecedesTemporalConstraint",
+      "name": "Edge",
+      "description": "",
+      "attributes": [
+        {
+          "name": "min",
+          "type": "double",
+          "value": 10
+        },
+        {
+          "name": "max",
+          "type": "double",
+          "value": 15
+        }
+      ],
+      "d3attributes": {
+        "x": 433,
+        "y": 432,
+        "endX": 497,
+        "endY": 324,
+        "sourceID": "end_activity_4deacecc-ef5b-4183-a219-d9ab26887236",
+        "targetID": "timepoint_7231fd06-2e87-4a68-b099-908ec93fd43b",
+        "type": "precedesArrow",
+        "shift": "right"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "edge_fed5eefb-8186-4950-b459-61e68eb5e8e7",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#PrecedesTemporalConstraint",
+      "name": "Edge",
+      "description": "",
+      "attributes": [
+        {
+          "name": "min",
+          "type": "double",
+          "value": 0
+        },
+        {
+          "name": "max",
+          "type": "double",
+          "value": 0
+        }
+      ],
+      "d3attributes": {
+        "x": 294,
+        "y": 122,
+        "endX": 600,
+        "endY": 120,
+        "sourceID": "end_activity_e4d3d7d5-4b6f-43ae-9e3a-2a88368fccbe",
+        "targetID": "start_activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+        "type": "precedesArrow",
+        "shift": "right"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "edge_bd5e5d9c-7a5d-4482-824b-8b45f6153a84",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#PrecedesTemporalConstraint",
+      "name": "Edge",
+      "description": "",
+      "attributes": [
+        {
+          "name": "min",
+          "type": "double",
+          "value": 0
+        },
+        {
+          "name": "max",
+          "type": "double",
+          "value": 0
+        }
+      ],
+      "d3attributes": {
+        "x": 680,
+        "y": 120,
+        "endX": 880,
+        "endY": 116,
+        "sourceID": "end_activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+        "targetID": "start_activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+        "type": "precedesArrow",
+        "shift": "right"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "edge_54ecaf34-ac74-48cf-b881-10156f10e2dc",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#PrecedesTemporalConstraint",
+      "name": "Edge",
+      "description": "",
+      "attributes": [
+        {
+          "name": "min",
+          "type": "double",
+          "value": 30
+        },
+        {
+          "name": "max",
+          "type": "double",
+          "value": 30
+        }
+      ],
+      "d3attributes": {
+        "x": 697,
+        "y": 414,
+        "endX": 802,
+        "endY": 370,
+        "sourceID": "end_activity_4d3ffbc1-e85d-4843-868b-63a8b7d9e1a6",
+        "targetID": "timepoint_336cd60f-631d-4bd3-9498-97bc642954f3",
+        "type": "precedesArrow",
+        "shift": "right"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "edge_695c5846-2faa-432f-953a-3f7ee2229434",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#PrecedesTemporalConstraint",
+      "name": "Edge",
+      "description": "",
+      "attributes": [
+        {
+          "name": "min",
+          "type": "double",
+          "value": 150
+        },
+        {
+          "name": "max",
+          "type": "double",
+          "value": 200
+        }
+      ],
+      "d3attributes": {
+        "x": 969,
+        "y": 343,
+        "endX": 1102,
+        "endY": 320,
+        "sourceID": "end_activity_843b3bb3-56cf-4760-8209-7aa5efdfbf25",
+        "targetID": "timepoint_f0a37dc6-8186-4bbd-86c1-6ac67c6c2a2a",
+        "type": "precedesArrow",
+        "shift": "right"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "edge_d85b0fcf-0df7-4351-92ee-14b3b305e8ef",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EqualsTemporalConstraint",
+      "name": "Edge",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "x": 960,
+        "y": 116,
+        "endX": 1102,
+        "endY": 320,
+        "sourceID": "end_activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+        "targetID": "timepoint_f0a37dc6-8186-4bbd-86c1-6ac67c6c2a2a",
+        "type": "equalsArrow",
+        "shift": "right"
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "8f9c0fd9-cbbe-42fe-ab5e-90ca6b874877",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StateConstraint",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "18ded510-f752-4ede-877e-b7ea13cde8b5",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StateConstraint",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "62208a4d-9c4b-4a3d-bba6-cd05c9b7dec9",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StateConstraint",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "c105d901-e413-4da8-b15c-bce9ba401b81",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#StateMachine",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "018b45f5-8460-410d-9c19-46396eef3c06",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#State",
+      "name": "Off",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "position": {
+          "x": 228,
+          "y": 115
+        }
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "77417305-6020-4db8-b9f1-92b26da414f0",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#State",
+      "name": "On",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "position": {
+          "x": 385,
+          "y": 128
+        }
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "8933d8ba-af34-40c5-9471-8b666c7b2627",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#State",
+      "name": "Standby",
+      "description": "",
+      "attributes": [],
+      "d3attributes": {
+        "position": {
+          "x": 492,
+          "y": 125
+        }
+      }
+    },
+    {
+      "graphUUID": null,
+      "id": "3a28ebc9-c4b4-467f-ace8-8913fc932409",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StateConstraint",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "67b840eb-3cab-4c2a-85ff-6bb3f2843c4d",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StateConstraint",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "abf13931-4fbd-4898-9d4a-c558602e0b4d",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StateConstraint",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "fd1acb66-a0f9-4096-8f9e-8578bc9e0342",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StateConstraint",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "e4274c64-8ad4-472f-be75-121646b5de4c",
+      "metamodelEntityID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#SchedulableConstraint",
+      "name": "Unnamed",
+      "description": "",
+      "attributes": [
+        {
+          "name": "expression",
+          "type": "string",
+          "value": ";s72eaf390-6dad-493c-94a4-101eeea38b46;e>0"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "graphUUID": null,
+      "id": "df8eef47-0d44-452c-a51f-b87f4bd67f1a",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "93c6e143-6466-49d9-af58-84ead2277572",
+      "targetID": "92f1b5e3-8bc0-42ed-94ae-9c87826a27e8",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "f0c47cba-e7bd-4a6e-b09d-9061ce629088",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "82b795ae-1af5-4b93-901d-5a963cc07d94",
+      "targetID": "92f1b5e3-8bc0-42ed-94ae-9c87826a27e8",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "ff6c4c6d-5df6-4cba-928e-5bf377c1a361",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "c04d7def-d6bc-442d-a1b8-19ae6774e46d",
+      "targetID": "92f1b5e3-8bc0-42ed-94ae-9c87826a27e8",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "2b28f649-5246-4976-bf6c-96e5f03d7a27",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "92f1b5e3-8bc0-42ed-94ae-9c87826a27e8",
+      "targetID": "e8fddfde-0952-4a8a-8c4e-0b7677989f74",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "271810f9-d8b9-43fc-9807-2cdab9909f2c",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "60633841-3765-469f-ac30-c4b46afd4a92",
+      "targetID": "f3ec1188-e6ef-4fe5-93ad-f8ba6f876d7f",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "40e96cfa-7d08-4bba-8e01-0e37c17c0d04",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "30875510-ffff-4e5f-8371-45360b540367",
+      "targetID": "f3ec1188-e6ef-4fe5-93ad-f8ba6f876d7f",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "cd2d1a28-05da-4e10-8d41-cfc027058d37",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "ddf1e8aa-eeca-46d6-a5c0-e979dabac0c1",
+      "targetID": "f3ec1188-e6ef-4fe5-93ad-f8ba6f876d7f",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "cbdccc1f-f2fa-4fb1-82bb-f6a8f8c194ad",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "c671bd81-0192-4244-b7b5-d32db9adac78",
+      "targetID": "f3ec1188-e6ef-4fe5-93ad-f8ba6f876d7f",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "b60ae595-cc2d-4471-840a-fc3d714615f8",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "75a9e80d-6d2e-421c-b9e6-45e465a193a4",
+      "targetID": "f3ec1188-e6ef-4fe5-93ad-f8ba6f876d7f",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "00e3462d-881b-4f50-969c-7ae6040add18",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "f3ec1188-e6ef-4fe5-93ad-f8ba6f876d7f",
+      "targetID": "59123556-2f60-41c2-ac89-74d45f4b8416",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "b70255dd-a19b-411a-9103-bb6a3fe0d777",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "bc44add2-8099-41e3-8671-fd1d2b805494",
+      "targetID": "0ab1fe76-78f9-4c78-972d-d2edc54cada3",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "0e22a1f8-ea53-477d-b1e3-c9a63d8a0ebf",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "72eaf390-6dad-493c-94a4-101eeea38b46",
+      "targetID": "0ab1fe76-78f9-4c78-972d-d2edc54cada3",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "6278796a-c08b-480f-bfe3-d82b1d5b4b75",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "f0c4402f-b398-48f2-ba9c-021efb436662",
+      "targetID": "0ab1fe76-78f9-4c78-972d-d2edc54cada3",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "54c2d759-df0a-4714-b090-2903935379e0",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "9ef4dc79-66ee-4958-b619-46ea41768787",
+      "targetID": "f80f3db0-c5d8-440f-8366-0bd5d9e02b6c",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "294c6401-5400-460c-9f40-d35da051e7fa",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Joins",
+      "description": "",
+      "sourceID": "3ac213c2-f5e8-48a5-a872-bad874b274d2",
+      "targetID": "f3ec1188-e6ef-4fe5-93ad-f8ba6f876d7f",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "b8cad41e-0983-4003-81d8-88faa3cd9218",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Joins",
+      "description": "",
+      "sourceID": "3ac213c2-f5e8-48a5-a872-bad874b274d2",
+      "targetID": "0ab1fe76-78f9-4c78-972d-d2edc54cada3",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "9aec9114-2bb8-40c0-935d-126e4a469970",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "3ac213c2-f5e8-48a5-a872-bad874b274d2",
+      "targetID": "1444b88d-4012-4b9b-b3ea-fb748d910bee",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "96fc8a51-f0d9-4bb9-a925-7d279e8e35c4",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Joins",
+      "description": "",
+      "sourceID": "3ac213c2-f5e8-48a5-a872-bad874b274d2",
+      "targetID": "92f1b5e3-8bc0-42ed-94ae-9c87826a27e8",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "312c30d4-5ee2-4fad-8b62-6e3a3b793b00",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasCodomain",
+      "description": "",
+      "sourceID": "f0c4402f-b398-48f2-ba9c-021efb436662",
+      "targetID": "871f03b0-60fe-4a0c-aa1c-86b1554edee7",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "312c30d4-5ee2-4fad-8b62-6e3a3b793b00",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasCodomain",
+      "description": "",
+      "sourceID": "f0c4402f-b398-48f2-ba9c-021efb436662",
+      "targetID": "871f03b0-60fe-4a0c-aa1c-86b1554edee7",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "8a2a3171-ab4b-4aa7-98e1-466672003fc2",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasState",
+      "description": "",
+      "sourceID": "871f03b0-60fe-4a0c-aa1c-86b1554edee7",
+      "targetID": "25cd21a8-e6b8-4179-8979-1610f745c383",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "9aa53bc4-8007-44e9-9567-75635c7cadee",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasState",
+      "description": "",
+      "sourceID": "871f03b0-60fe-4a0c-aa1c-86b1554edee7",
+      "targetID": "ef3d41e8-17c6-4d96-b1eb-b1934e92446f",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "6b3cafa7-0646-4dfb-8518-13a3394e84c9",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "25cd21a8-e6b8-4179-8979-1610f745c383",
+      "targetID": "3a18c629-7139-4892-9c49-72015a0da468",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "3dd48e4d-70e0-4073-b8c7-e5b9bd2e04a1",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#Describes",
+      "description": "",
+      "sourceID": "ef3d41e8-17c6-4d96-b1eb-b1934e92446f",
+      "targetID": "8dae5bc9-db19-478e-8eab-784169adefeb",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "df6c698c-b78d-4452-ba18-cc8d77bfdda1",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasStartState",
+      "description": "",
+      "sourceID": "b7e79543-009a-4cbd-ad17-970f46df1a51",
+      "targetID": "25cd21a8-e6b8-4179-8979-1610f745c383",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "3ec1cff8-70da-42a2-8411-4f365f0c7c67",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasEndState",
+      "description": "",
+      "sourceID": "b7e79543-009a-4cbd-ad17-970f46df1a51",
+      "targetID": "ef3d41e8-17c6-4d96-b1eb-b1934e92446f",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "79437b17-f1de-499b-aef6-84b67305b10a",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasStartState",
+      "description": "",
+      "sourceID": "d95ca6b3-d5be-4e81-8816-57e29b10fa9a",
+      "targetID": "ef3d41e8-17c6-4d96-b1eb-b1934e92446f",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "03f4a269-0888-4397-b33a-d8697806c3b2",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasEndState",
+      "description": "",
+      "sourceID": "d95ca6b3-d5be-4e81-8816-57e29b10fa9a",
+      "targetID": "25cd21a8-e6b8-4179-8979-1610f745c383",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "0b2f27ce-83e5-43d3-93de-31457ed21af0",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasTrigger",
+      "description": "",
+      "sourceID": "d95ca6b3-d5be-4e81-8816-57e29b10fa9a",
+      "targetID": "105fdc2a-4b0b-4a22-9825-163192459ca6",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "e76fc5eb-b1d6-4b2e-816b-6887811cc93a",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasGuard",
+      "description": "",
+      "sourceID": "d95ca6b3-d5be-4e81-8816-57e29b10fa9a",
+      "targetID": "7d8c0ae2-760f-4aa3-b9cb-c3db227c36cb",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "203210f6-9621-4ae3-b85e-80c1f43a36da",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasTrigger",
+      "description": "",
+      "sourceID": "b7e79543-009a-4cbd-ad17-970f46df1a51",
+      "targetID": "f94b4e52-f52c-4c73-8eca-669b455674cb",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "b61f4b2d-8a7c-4a30-8fac-f9924a5cb4f8",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasGuard",
+      "description": "",
+      "sourceID": "b7e79543-009a-4cbd-ad17-970f46df1a51",
+      "targetID": "30208b9b-1b1d-4258-a6ea-dd6513d7930a",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "3d890536-d5f4-4057-bb12-9ec5ebe39d3f",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Represents",
+      "description": "",
+      "sourceID": "swimlane_e6669ea2-1b24-4f1c-b930-4658459f83c2",
+      "targetID": "0ab1fe76-78f9-4c78-972d-d2edc54cada3",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "f1498a02-44ea-41bb-a01a-161eb874eb09",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "swimlane_e6669ea2-1b24-4f1c-b930-4658459f83c2",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "f6a0ad08-8217-4a2d-850c-36ff5b98d6f0",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Represents",
+      "description": "",
+      "sourceID": "swimlane_49b12fc2-8096-4d03-b2a9-655dfd942970",
+      "targetID": "f80f3db0-c5d8-440f-8366-0bd5d9e02b6c",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "f2b9a621-3bb5-459f-94ef-447c666895ff",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "swimlane_49b12fc2-8096-4d03-b2a9-655dfd942970",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "6302c3ff-ebed-4247-a68f-2d067662ace0",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "swimlane_49b12fc2-8096-4d03-b2a9-655dfd942970",
+      "targetID": "timepoint_8e8d53cb-4c27-4b8a-98f3-ccacafbd4830",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "3ff9748d-5362-4e7f-b4fd-332c97a9c441",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "swimlane_49b12fc2-8096-4d03-b2a9-655dfd942970",
+      "targetID": "timepoint_f0a37dc6-8186-4bbd-86c1-6ac67c6c2a2a",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "378a17e7-e877-422d-8006-c93f6039ea15",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "swimlane_49b12fc2-8096-4d03-b2a9-655dfd942970",
+      "targetID": "activity_00f3ba72-3a41-439b-8bcc-b0e5ed77e13d",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "3ef2c953-2e2d-4534-b36e-bd8cff573d93",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StartsWith",
+      "description": "",
+      "sourceID": "activity_00f3ba72-3a41-439b-8bcc-b0e5ed77e13d",
+      "targetID": "start_activity_00f3ba72-3a41-439b-8bcc-b0e5ed77e13d",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "afea206a-f918-4bb1-8061-6af6285a0fe7",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EndsWith",
+      "description": "",
+      "sourceID": "activity_00f3ba72-3a41-439b-8bcc-b0e5ed77e13d",
+      "targetID": "end_activity_00f3ba72-3a41-439b-8bcc-b0e5ed77e13d",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "3a7044e7-45c1-4682-8200-cb51f8ed2d62",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#IsTypedBy",
+      "description": "",
+      "sourceID": "activity_00f3ba72-3a41-439b-8bcc-b0e5ed77e13d",
+      "targetID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "6f3fd21e-ab9b-47ec-94cb-8aeefe4e694f",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "swimlane_e6669ea2-1b24-4f1c-b930-4658459f83c2",
+      "targetID": "activity_e4d3d7d5-4b6f-43ae-9e3a-2a88368fccbe",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "59803066-ff75-4917-99e1-b250f1cbed58",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StartsWith",
+      "description": "",
+      "sourceID": "activity_e4d3d7d5-4b6f-43ae-9e3a-2a88368fccbe",
+      "targetID": "start_activity_e4d3d7d5-4b6f-43ae-9e3a-2a88368fccbe",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "3fb2c77d-bb81-4fda-b1d7-dfaf55e2e9c6",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EndsWith",
+      "description": "",
+      "sourceID": "activity_e4d3d7d5-4b6f-43ae-9e3a-2a88368fccbe",
+      "targetID": "end_activity_e4d3d7d5-4b6f-43ae-9e3a-2a88368fccbe",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "b9ba9ac7-c57a-4e4d-8ae4-92895c2903a1",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#IsTypedBy",
+      "description": "",
+      "sourceID": "activity_e4d3d7d5-4b6f-43ae-9e3a-2a88368fccbe",
+      "targetID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "2024e9ba-c853-46f8-bc9e-ec2ceb461fd2",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "swimlane_49b12fc2-8096-4d03-b2a9-655dfd942970",
+      "targetID": "timepoint_7231fd06-2e87-4a68-b099-908ec93fd43b",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "57ed941b-a10a-4507-b35f-ed3c5b55e627",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "swimlane_49b12fc2-8096-4d03-b2a9-655dfd942970",
+      "targetID": "timepoint_336cd60f-631d-4bd3-9498-97bc642954f3",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "f7368894-4459-4509-b456-7b8fb361f408",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "swimlane_49b12fc2-8096-4d03-b2a9-655dfd942970",
+      "targetID": "activity_4deacecc-ef5b-4183-a219-d9ab26887236",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "62578ac9-a17d-4a32-a45a-a85d9f30dbdc",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StartsWith",
+      "description": "",
+      "sourceID": "activity_4deacecc-ef5b-4183-a219-d9ab26887236",
+      "targetID": "start_activity_4deacecc-ef5b-4183-a219-d9ab26887236",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "5ed86492-0ba4-40e8-aa97-d96620c38515",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EndsWith",
+      "description": "",
+      "sourceID": "activity_4deacecc-ef5b-4183-a219-d9ab26887236",
+      "targetID": "end_activity_4deacecc-ef5b-4183-a219-d9ab26887236",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "62a1339e-16b4-4943-959a-d8055c402803",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#IsTypedBy",
+      "description": "",
+      "sourceID": "activity_4deacecc-ef5b-4183-a219-d9ab26887236",
+      "targetID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "9189500f-2eb0-4204-96e0-481387ad9494",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "swimlane_49b12fc2-8096-4d03-b2a9-655dfd942970",
+      "targetID": "activity_4d3ffbc1-e85d-4843-868b-63a8b7d9e1a6",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "d3c21856-464a-4460-a7dc-a029fa75f327",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StartsWith",
+      "description": "",
+      "sourceID": "activity_4d3ffbc1-e85d-4843-868b-63a8b7d9e1a6",
+      "targetID": "start_activity_4d3ffbc1-e85d-4843-868b-63a8b7d9e1a6",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "e97aac5a-6043-4cb0-a46c-3238d1c9cf20",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EndsWith",
+      "description": "",
+      "sourceID": "activity_4d3ffbc1-e85d-4843-868b-63a8b7d9e1a6",
+      "targetID": "end_activity_4d3ffbc1-e85d-4843-868b-63a8b7d9e1a6",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "64041855-47f3-4807-b37f-1d68e1881fdf",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#IsTypedBy",
+      "description": "",
+      "sourceID": "activity_4d3ffbc1-e85d-4843-868b-63a8b7d9e1a6",
+      "targetID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "211142d7-ff81-4293-a68c-0257e064e7c3",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "swimlane_49b12fc2-8096-4d03-b2a9-655dfd942970",
+      "targetID": "activity_843b3bb3-56cf-4760-8209-7aa5efdfbf25",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "32118e0f-89fd-4d95-b21f-07651593c7c5",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StartsWith",
+      "description": "",
+      "sourceID": "activity_843b3bb3-56cf-4760-8209-7aa5efdfbf25",
+      "targetID": "start_activity_843b3bb3-56cf-4760-8209-7aa5efdfbf25",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "07fce5b2-a72b-4249-8d74-531d5c46b5fb",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EndsWith",
+      "description": "",
+      "sourceID": "activity_843b3bb3-56cf-4760-8209-7aa5efdfbf25",
+      "targetID": "end_activity_843b3bb3-56cf-4760-8209-7aa5efdfbf25",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "ba38c32e-504a-4752-99f8-3574b302649e",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#IsTypedBy",
+      "description": "",
+      "sourceID": "activity_843b3bb3-56cf-4760-8209-7aa5efdfbf25",
+      "targetID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "ba6f5a64-8a01-4ba9-84c4-bd833e980d69",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "swimlane_e6669ea2-1b24-4f1c-b930-4658459f83c2",
+      "targetID": "activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "4afa0c34-0157-4685-abf8-fc86f18a96c5",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StartsWith",
+      "description": "",
+      "sourceID": "activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+      "targetID": "start_activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "4e97c0f0-9e1d-413b-836e-0c57cd186060",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EndsWith",
+      "description": "",
+      "sourceID": "activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+      "targetID": "end_activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "6dc77b55-d6ea-4a02-8280-33f523225a5b",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#IsTypedBy",
+      "description": "",
+      "sourceID": "activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+      "targetID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "c7c7e759-36ec-4d34-b901-270862b87d71",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "swimlane_e6669ea2-1b24-4f1c-b930-4658459f83c2",
+      "targetID": "activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "74e7b675-f53f-4d31-a64d-8da7c273e0b4",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#StartsWith",
+      "description": "",
+      "sourceID": "activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+      "targetID": "start_activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "164ebc0b-f0b5-4145-a8a0-714f68a8ead6",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#EndsWith",
+      "description": "",
+      "sourceID": "activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+      "targetID": "end_activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "7e781092-d953-40bb-834f-872653c73f70",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#IsTypedBy",
+      "description": "",
+      "sourceID": "activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+      "targetID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "13aa64a5-2d0d-4934-aa01-e0916ddfb52c",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "edge_888c2053-bfbe-453a-b23c-e2486218b282",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "7ecbd934-b4ca-4230-b360-e3af4eb7ab6a",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasSource",
+      "description": "",
+      "sourceID": "edge_888c2053-bfbe-453a-b23c-e2486218b282",
+      "targetID": "timepoint_8e8d53cb-4c27-4b8a-98f3-ccacafbd4830",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "c65ca0e7-f063-4a19-bd9d-862a849ed129",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasTarget",
+      "description": "",
+      "sourceID": "edge_888c2053-bfbe-453a-b23c-e2486218b282",
+      "targetID": "start_activity_00f3ba72-3a41-439b-8bcc-b0e5ed77e13d",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "a8cf614d-7a85-42b1-a655-eb2eacc91a59",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "edge_10fbd64e-34da-4725-b2c5-954dae17f08f",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "c1c848ef-92eb-4a9b-9a95-f9122e145fe7",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasSource",
+      "description": "",
+      "sourceID": "edge_10fbd64e-34da-4725-b2c5-954dae17f08f",
+      "targetID": "timepoint_8e8d53cb-4c27-4b8a-98f3-ccacafbd4830",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "41415189-36cb-4313-a460-a9b637f27877",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasTarget",
+      "description": "",
+      "sourceID": "edge_10fbd64e-34da-4725-b2c5-954dae17f08f",
+      "targetID": "start_activity_e4d3d7d5-4b6f-43ae-9e3a-2a88368fccbe",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "c593efc7-b286-4410-94d1-d3dc7be1ca57",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "edge_30b96204-cf77-4d57-831d-159216747adb",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "55653d3b-2476-4b02-a8d3-4847813f56cf",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasSource",
+      "description": "",
+      "sourceID": "edge_30b96204-cf77-4d57-831d-159216747adb",
+      "targetID": "timepoint_7231fd06-2e87-4a68-b099-908ec93fd43b",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "09307fb7-a18a-4fdf-87c0-5d5e3e3e0189",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasTarget",
+      "description": "",
+      "sourceID": "edge_30b96204-cf77-4d57-831d-159216747adb",
+      "targetID": "start_activity_4d3ffbc1-e85d-4843-868b-63a8b7d9e1a6",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "089f75a5-975f-4e0a-8d1f-eb8b4b8c227e",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "edge_b9eb77ab-923d-46a4-bfc0-11159a779e6a",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "b0db10fe-17c3-44ff-ba32-be0816059992",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasSource",
+      "description": "",
+      "sourceID": "edge_b9eb77ab-923d-46a4-bfc0-11159a779e6a",
+      "targetID": "timepoint_7231fd06-2e87-4a68-b099-908ec93fd43b",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "1ca9cd85-c83f-49d2-9d87-772217545431",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasTarget",
+      "description": "",
+      "sourceID": "edge_b9eb77ab-923d-46a4-bfc0-11159a779e6a",
+      "targetID": "start_activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "7bf6d535-5117-4dd8-87d4-0da05d1f8dc9",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "edge_cbf52161-8a44-4f8b-9c01-40fe3f4ff6a7",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "8ce8c436-fdb1-485c-91bd-de831195f1dd",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasSource",
+      "description": "",
+      "sourceID": "edge_cbf52161-8a44-4f8b-9c01-40fe3f4ff6a7",
+      "targetID": "timepoint_336cd60f-631d-4bd3-9498-97bc642954f3",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "7421fd82-51bd-40f0-a455-3d05044b43b1",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasTarget",
+      "description": "",
+      "sourceID": "edge_cbf52161-8a44-4f8b-9c01-40fe3f4ff6a7",
+      "targetID": "start_activity_843b3bb3-56cf-4760-8209-7aa5efdfbf25",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "827f74e9-3be1-4c75-b3c3-172b27df7bb5",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "edge_0b84df2d-bf94-4152-9ead-43ff4480ae1f",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "e0f34305-5f7d-4534-b869-722d73cc5056",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasSource",
+      "description": "",
+      "sourceID": "edge_0b84df2d-bf94-4152-9ead-43ff4480ae1f",
+      "targetID": "timepoint_336cd60f-631d-4bd3-9498-97bc642954f3",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "83271654-84f8-4695-bbb3-3de9286f0982",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasTarget",
+      "description": "",
+      "sourceID": "edge_0b84df2d-bf94-4152-9ead-43ff4480ae1f",
+      "targetID": "start_activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "28a3b7cc-e67d-4cbe-bc7b-ee68fb51a23b",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "edge_b89be344-c615-4226-994c-aecc37ef7f0c",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "b452f6c9-e0a7-47c3-8eab-9a7f13f189b9",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasSource",
+      "description": "",
+      "sourceID": "edge_b89be344-c615-4226-994c-aecc37ef7f0c",
+      "targetID": "end_activity_00f3ba72-3a41-439b-8bcc-b0e5ed77e13d",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "c260cac2-9644-4e7f-a8db-55425c4165c6",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasTarget",
+      "description": "",
+      "sourceID": "edge_b89be344-c615-4226-994c-aecc37ef7f0c",
+      "targetID": "start_activity_4deacecc-ef5b-4183-a219-d9ab26887236",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "be298f49-a70a-4b04-b193-83b0a39db6bb",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "edge_490ac3ff-687a-4340-abd8-d88714bfa325",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "daecf368-e766-4a9c-a0c7-46c64df0f7d5",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasSource",
+      "description": "",
+      "sourceID": "edge_490ac3ff-687a-4340-abd8-d88714bfa325",
+      "targetID": "end_activity_4deacecc-ef5b-4183-a219-d9ab26887236",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "2255c276-2545-4b57-8a16-92771e5e509f",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasTarget",
+      "description": "",
+      "sourceID": "edge_490ac3ff-687a-4340-abd8-d88714bfa325",
+      "targetID": "timepoint_7231fd06-2e87-4a68-b099-908ec93fd43b",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "5ab034bb-f297-4f41-8509-43107ecf74b2",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "edge_fed5eefb-8186-4950-b459-61e68eb5e8e7",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "b8d42a3a-1b9c-4289-b1e9-88bee7097cd2",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasSource",
+      "description": "",
+      "sourceID": "edge_fed5eefb-8186-4950-b459-61e68eb5e8e7",
+      "targetID": "end_activity_e4d3d7d5-4b6f-43ae-9e3a-2a88368fccbe",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "9a7c3b41-c636-47ca-9ae0-29eb40b9d3c9",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasTarget",
+      "description": "",
+      "sourceID": "edge_fed5eefb-8186-4950-b459-61e68eb5e8e7",
+      "targetID": "start_activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "8595d403-fb41-409f-b84c-4c1ac18c9bf6",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "edge_bd5e5d9c-7a5d-4482-824b-8b45f6153a84",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "f7b4c274-823d-4214-857f-d42f2323379f",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasSource",
+      "description": "",
+      "sourceID": "edge_bd5e5d9c-7a5d-4482-824b-8b45f6153a84",
+      "targetID": "end_activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "229e297a-930e-4df9-bbe4-9bfb753b533d",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasTarget",
+      "description": "",
+      "sourceID": "edge_bd5e5d9c-7a5d-4482-824b-8b45f6153a84",
+      "targetID": "start_activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "9aed0220-df4c-4b68-823f-3305227d699d",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "edge_54ecaf34-ac74-48cf-b881-10156f10e2dc",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "beb92412-a56f-4b5c-99ad-8e1165ec2f7a",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasSource",
+      "description": "",
+      "sourceID": "edge_54ecaf34-ac74-48cf-b881-10156f10e2dc",
+      "targetID": "end_activity_4d3ffbc1-e85d-4843-868b-63a8b7d9e1a6",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "99015ddf-3c62-4f5a-9903-4d7884e4e223",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasTarget",
+      "description": "",
+      "sourceID": "edge_54ecaf34-ac74-48cf-b881-10156f10e2dc",
+      "targetID": "timepoint_336cd60f-631d-4bd3-9498-97bc642954f3",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "60cf5ac5-d6d9-40a2-80b8-48360f222494",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "edge_695c5846-2faa-432f-953a-3f7ee2229434",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "94b22aae-7aba-4959-bf6d-ae80f42a8d8f",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasSource",
+      "description": "",
+      "sourceID": "edge_695c5846-2faa-432f-953a-3f7ee2229434",
+      "targetID": "end_activity_843b3bb3-56cf-4760-8209-7aa5efdfbf25",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "da15f944-0ae0-484a-9002-23e96ba64d4c",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasTarget",
+      "description": "",
+      "sourceID": "edge_695c5846-2faa-432f-953a-3f7ee2229434",
+      "targetID": "timepoint_f0a37dc6-8186-4bbd-86c1-6ac67c6c2a2a",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "89ab362e-1f8e-42d9-9ac2-3f584c23ed81",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/base/base#Contains",
+      "description": "",
+      "sourceID": "91a7d0ef-7a2b-49bd-b895-cdcd68a94c42",
+      "targetID": "edge_d85b0fcf-0df7-4351-92ee-14b3b305e8ef",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "680603eb-5eaf-4efd-89f6-6ebf6df3b69b",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasSource",
+      "description": "",
+      "sourceID": "edge_d85b0fcf-0df7-4351-92ee-14b3b305e8ef",
+      "targetID": "end_activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "024bab70-01a6-4486-a4ff-b0269ccc711b",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#HasTarget",
+      "description": "",
+      "sourceID": "edge_d85b0fcf-0df7-4351-92ee-14b3b305e8ef",
+      "targetID": "timepoint_f0a37dc6-8186-4bbd-86c1-6ac67c6c2a2a",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "d26ae279-7dc0-4159-ab86-e438be3612f5",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Imposes",
+      "description": "",
+      "sourceID": "8f9c0fd9-cbbe-42fe-ab5e-90ca6b874877",
+      "targetID": "activity_e4d3d7d5-4b6f-43ae-9e3a-2a88368fccbe",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "b25a3336-831a-492c-a1ae-8980270a72c8",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Specifies",
+      "description": "",
+      "sourceID": "8f9c0fd9-cbbe-42fe-ab5e-90ca6b874877",
+      "targetID": "ef3d41e8-17c6-4d96-b1eb-b1934e92446f",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "cb1f3269-e421-4fee-a764-9a0e49f4189a",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Imposes",
+      "description": "",
+      "sourceID": "18ded510-f752-4ede-877e-b7ea13cde8b5",
+      "targetID": "activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "f091bb07-7aef-4209-b8a4-e92f37eb1bc3",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Specifies",
+      "description": "",
+      "sourceID": "18ded510-f752-4ede-877e-b7ea13cde8b5",
+      "targetID": "25cd21a8-e6b8-4179-8979-1610f745c383",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "d3ba8874-3b69-4ce3-b5bb-e5fb33554770",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Imposes",
+      "description": "",
+      "sourceID": "62208a4d-9c4b-4a3d-bba6-cd05c9b7dec9",
+      "targetID": "activity_5960fd2b-69fd-477e-b93b-11f38987004a",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "f0adcc33-d813-4ae0-a0f6-68a723a77450",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Specifies",
+      "description": "",
+      "sourceID": "62208a4d-9c4b-4a3d-bba6-cd05c9b7dec9",
+      "targetID": "ef3d41e8-17c6-4d96-b1eb-b1934e92446f",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "ce074421-4f4b-46b3-a319-a96259f5effc",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasCodomain",
+      "description": "",
+      "sourceID": "9ef4dc79-66ee-4958-b619-46ea41768787",
+      "targetID": "c105d901-e413-4da8-b15c-bce9ba401b81",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "ce074421-4f4b-46b3-a319-a96259f5effc",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasCodomain",
+      "description": "",
+      "sourceID": "9ef4dc79-66ee-4958-b619-46ea41768787",
+      "targetID": "c105d901-e413-4da8-b15c-bce9ba401b81",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "57266321-55c4-410d-aaee-fe18ac8be85e",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasState",
+      "description": "",
+      "sourceID": "c105d901-e413-4da8-b15c-bce9ba401b81",
+      "targetID": "018b45f5-8460-410d-9c19-46396eef3c06",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "5b309e97-82b7-416a-ba0f-0e8120faccd7",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasState",
+      "description": "",
+      "sourceID": "c105d901-e413-4da8-b15c-bce9ba401b81",
+      "targetID": "77417305-6020-4db8-b9f1-92b26da414f0",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "548abfb3-38df-494e-b1ab-46e5986f3164",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/behavior/behavior#HasState",
+      "description": "",
+      "sourceID": "c105d901-e413-4da8-b15c-bce9ba401b81",
+      "targetID": "8933d8ba-af34-40c5-9471-8b666c7b2627",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "05969f38-897c-42a1-ac4e-d25a45385591",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Imposes",
+      "description": "",
+      "sourceID": "3a28ebc9-c4b4-467f-ace8-8913fc932409",
+      "targetID": "activity_00f3ba72-3a41-439b-8bcc-b0e5ed77e13d",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "2db5a2cf-12ec-4f5b-ad8e-2c41a08d0493",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Specifies",
+      "description": "",
+      "sourceID": "3a28ebc9-c4b4-467f-ace8-8913fc932409",
+      "targetID": "018b45f5-8460-410d-9c19-46396eef3c06",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "3ef7edc7-6e29-47a6-94af-1b1f1d2226a2",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Imposes",
+      "description": "",
+      "sourceID": "67b840eb-3cab-4c2a-85ff-6bb3f2843c4d",
+      "targetID": "activity_4deacecc-ef5b-4183-a219-d9ab26887236",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "c13e3c5b-04e9-4374-a654-44d9c45603af",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Specifies",
+      "description": "",
+      "sourceID": "67b840eb-3cab-4c2a-85ff-6bb3f2843c4d",
+      "targetID": "8933d8ba-af34-40c5-9471-8b666c7b2627",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "4fcd6360-696a-47b3-a09e-7ca5e832b971",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Imposes",
+      "description": "",
+      "sourceID": "abf13931-4fbd-4898-9d4a-c558602e0b4d",
+      "targetID": "activity_4d3ffbc1-e85d-4843-868b-63a8b7d9e1a6",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "fbe4699c-3900-48a7-bb67-cfa1b94911ae",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Specifies",
+      "description": "",
+      "sourceID": "abf13931-4fbd-4898-9d4a-c558602e0b4d",
+      "targetID": "77417305-6020-4db8-b9f1-92b26da414f0",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "983b3f95-6ace-4486-a7d4-f2680eb3136d",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Imposes",
+      "description": "",
+      "sourceID": "fd1acb66-a0f9-4096-8f9e-8578bc9e0342",
+      "targetID": "activity_843b3bb3-56cf-4760-8209-7aa5efdfbf25",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "2c1312c3-b546-451e-aeac-eaf568d79a8c",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Specifies",
+      "description": "",
+      "sourceID": "fd1acb66-a0f9-4096-8f9e-8578bc9e0342",
+      "targetID": "8933d8ba-af34-40c5-9471-8b666c7b2627",
+      "attributes": []
+    },
+    {
+      "graphUUID": null,
+      "id": "6628274f-3372-4116-948b-4abcbdf617de",
+      "metamodelRelationshipID": "http://imce.jpl.nasa.gov/foundation/scenario/scenario#Imposes",
+      "description": "",
+      "sourceID": "activity_16102f0b-2945-44cb-ba3c-88eb0069276b",
+      "targetID": "e4274c64-8ad4-472f-be75-121646b5de4c",
+      "attributes": []
+    }
+  ]
+}

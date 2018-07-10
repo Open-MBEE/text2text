@@ -514,10 +514,9 @@ public class Translator {
 //    plugins.addPreprocessor(Preprocessors::kParser, "K parser", "kParser", "k");
     plugins.addPreprocessor(Preprocessors::jsonReflection, "json reflection", "jsonReflection", "reflection", "jsonReflect", "reflect");
     plugins.addPreprocessor(Preprocessors::mmsFlatten, "flatten", "mms", "mmsJson", "jsonMMS", "flattenMMS", "mmsFlatten");
-    List<String> becosDelims = new LinkedList<String>();
-    becosDelims.add(";s");
-    becosDelims.add(";e");
-    plugins.addPreprocessor(Preprocessors.splitStrings(becosDelims), "becosStrings", "becosStrs", "becosStr", "becos");
+    plugins.addPreprocessor(
+        Preprocessors.splitStrings( Arrays.asList(";s",";e") ).andThen( JsonNode::toString ).andThen( Preprocessors::replaceLatex ),
+        "becosStrings", "becosStrs", "becosStr", "becos");
     
     plugins.addSanitizer(s -> s, "default", "def", "none", "identity");
     plugins.addSanitizer(identSanitizer, "identifier", "ident", "name");

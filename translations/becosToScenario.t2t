@@ -1,0 +1,1352 @@
+
+Template: K File
+%scalars
+
+%classes
+
+class System {
+    %classInstances
+    %interactionBehaviors
+}
+
+%scenarios
+Fields:
+
+hasDocument
+    (Trigger)
+    DOC
+scalars
+    (Body "\n\n")
+    DOC.entities[*].attributes[*]
+        ?(.name = "quantity kind")
+classes
+    (Body "\n\n")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Component")
+        .id
+classInstances
+    (Body)
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Component")
+        .name
+interactionBehaviors
+    (Body)
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#InteractionBehavior")
+scenarios
+    (Body "\n\n")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Rule")
+
+
+Template: Class Instance
+%className instance_%className
+Fields:
+
+PARENT_REFERENCE
+    DOC // inserts into System Class
+className
+    (Trigger)
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Component")
+        .name
+
+
+
+
+(NoDuplicates)
+Template: Scalar
+scalar %scalarName
+Fields:
+
+scalarName
+    (Trigger)
+    DOC.entities[*].attributes[*]
+        ?(.name = "quantity kind")
+        .value
+        ?(!?(HERE = "StateMachine")) // don't make "scalar StateMachine"
+
+
+Template: Class
+class %className { // name = "%rawName", description = "%description", uuid = "%classId"
+    %body
+}
+Fields:
+
+PARENT_REFERENCE
+    DOC
+classId
+    (Trigger, Raw "stringEscape")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Component")
+        .id
+className
+    (Required)
+    REF.^.name
+body
+    (Body)
+rawName
+    (Raw "stringEscape")
+    REF.^.name
+description
+    (Raw "stringEscape")
+    REF.^.description
+
+
+
+Template: State Variable
+sv %varType %varName // name = "%rawName", description = "%description", uuid = "%varId", units = "%units"
+Fields:
+
+PARENT_REFERENCE
+    (Raw)
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#Describes")
+        ?(.sourceID = REF)
+        .targetID
+varId
+    (Trigger, Raw "stringEscape")
+    DOC.entities[*][ 
+            ?(.metamodelEntityID ~= ".*#Parameter"),
+            ?(.metamodelEntityID ~= ".*#StateVariable")
+        ].id
+varName
+    (Required)
+    REF.^.attributes[*]
+        ?(.name = "symbol")
+        .value
+varType
+    (Required)
+    REF.^[
+        .attributes[*]
+            ?(.name = "quantity kind")
+            .value
+            ?(!?(HERE = "StateMachine")) // grab the quantity kind if not a StateMachine
+        ,
+        ?(.attributes[*]
+            ?(.name = "quantity kind")
+            .value = "StateMachine")
+        .name // grab the object name if this is a StateMachine
+    ]
+rawName
+    (Raw "stringEscape")
+    REF.^.name
+description
+    (Raw "stringEscape")
+    REF.^.description
+units
+    (Raw "stringEscape")
+    REF.^.attributes[*]
+        ?(.name = "units")
+        .value
+
+
+
+
+Template: Value Assertion
+assert %varName = %value // name = "%rawName", description = "%description", uuid = "%rawId"
+Fields:
+
+PARENT_REFERENCE
+    (Raw)
+    DOC.relationships[*]
+        ?(.sourceID = REF.^.^.id)
+        .targetID
+assertionObject
+    (Trigger)
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Parameter")
+        .attributes[*]
+            ?(.name = "value")
+varName
+    REF.^[*]
+        ?(.name = "symbol")
+        .value
+value
+    (Raw)
+    REF.value
+rawName
+    (Raw "stringEscape")
+    REF.^.^.name
+description
+    (Raw "stringEscape")
+    REF.^.^.description
+rawId
+    (Raw "stringEscape")
+    REF.^.^.id
+
+
+
+
+Template: Expression Assertion
+assert %body // name = "%rawName", description = "%description", uuid = "%rawId"
+Fields:
+
+PARENT_REFERENCE
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#Describes")
+        ?(.targetID = REF.^.^.id)
+        .sourceID
+expression
+    (Trigger)
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#ElementBehavior")
+        .attributes[*]
+            ?(.name = "expression")
+            ?(.type = "string")
+body
+    (Body)
+rawName
+    (Raw "stringEscape")
+    REF.^.^.name
+description
+    (Raw "stringEscape")
+    REF.^.^.description
+rawId
+    (Raw "stringEscape")
+    REF.^.^.id
+
+
+
+// explanation of String Expression:
+// first two fields, thisRaw and thisId, handle what "this" component is
+// only one is non-blank in any given instance. thisRaw is the raw component, thisId matches the component to 
+// an entity ID and uses that entity's name
+// next is a body field, and the next (subtree) of components will be inserted there
+// This handles most string expressions, which are broken by the split-strings preprocessor because they contain IDs
+// The Simple String Expression handles the case when there are no ID's
+
+Template: String Expression
+%thisRaw%thisQualifier%thisId %next
+Fields:
+
+PARENT_REFERENCE
+    REF.^
+trigger
+    (Trigger, Raw "stringEscape")
+    DOC.entities[*].attributes[*]
+        ?(.name = "expression")
+        ?(.type = "string")
+        .value.**
+            ?([0] ~= ".*") // grab non-empty arrays
+thisRaw
+    (Raw)
+    REF[0]
+        ?(!?(HERE = DOC.entities[*].id)) // this isn't an id for anything
+thisId
+    DOC.entities[*]
+        ?(.id = REF[0])
+        .attributes[*]
+            ?(.name = "symbol")
+            .value
+thisQualifier // add a qualifying name when this is an expression external to the class of the variables it uses
+    ("instance_%s.")
+    ?(REF.^^.metamodelEntityID ~= ".*#InteractionBehavior")
+    DOC.entities[*]
+        ?(.id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Describes")
+                ?(.sourceID = REF[0])
+                .targetID)
+        .name
+
+next
+    (Body)
+
+
+Template: Simple String Expression
+%value
+Fields:
+
+PARENT_REFERENCE
+    REF.^
+value
+    (Trigger, Raw "stringEscape")
+    DOC.entities[*].attributes[*]
+        ?(.name = "expression")
+        ?(.type = "string")
+        .value
+            ?(![0]) // is not an array
+
+
+
+Template: State Machine
+mode %machineName ( %modes ) // name = "%rawName", description = "%description", uuid = "%machineId"
+    %transitions
+%stateBehaviors
+Fields:
+
+PARENT_REFERENCE
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#Describes")
+        ?(.sourceID = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasCodomain")
+                ?(.targetID = REF)
+                .sourceID) // ID of StateVariable that instantiates this StateMachine
+        .targetID // ID of Component that contains that StateVariable
+machineId
+    (Trigger, Raw "stringEscape")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#StateMachine")
+        .id
+machineName
+    (Required)
+    DOC.entities[*]
+        ?(.id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasCodomain")
+                ?(.targetID = REF)
+                .sourceID) // ID of StateVariable that instantiates this StateMachine
+        .name
+modes
+    (Multi ", ")
+    DOC.entities[*]
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasState")
+                ?(.sourceID = REF)
+                .targetID)
+        .name
+transitions
+    (Body ",\n")
+    ("{\n%s\n}")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Transition")
+stateBehaviors
+    (Body)
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#StateBehavior")
+rawName
+    (Raw "stringEscape")
+    REF.^.name
+description
+    (Raw "stringEscape")
+    REF.^.description
+
+
+
+Template: State Machine Command Declaration
+mode %machineName_trigger ( %cmds )
+Fields:
+
+machineId
+    (Trigger)
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#StateMachine")
+        .id
+machineName // TODO - come up with a way to detect shared commands and not duplicate them
+    (Required)
+    DOC.entities[*]
+        ?(.id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasCodomain")
+                ?(.targetID = REF)
+                .sourceID) // ID of StateVariable that instantiates this StateMachine
+        .name
+cmds
+    (Multi ", ", Required)
+    DOC.entities[*]
+        ?(.id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasTrigger")
+                ?(.sourceID = 
+                    DOC.relationships[*]
+                        [
+                            ?(.metamodelRelationshipID ~= ".*#HasStartState"),
+                            ?(.metamodelRelationshipID ~= ".*#HasEndState")
+                        ]
+                        ?(.targetID = 
+                            DOC.relationships[*]
+                                ?(.metamodelRelationshipID ~= ".*#HasState")
+                                ?(.sourceID = REF)
+                                .targetID) // ID of any state in this state machine
+                        .sourceID) // ID of any transition in this state machine
+                .targetID) // ID of any trigger in this state machine
+        .attributes[*]
+            ?(.name = "expression")
+            ?(.type = "string")
+            .value
+
+
+
+
+// TODO: related to comment for State Machine Command Declaration,
+// once we can distinguish duplicate sets of commands, need to
+// change the machineName query to choose the appropriate name
+Template: State Machine Command Variable
+sv %machineName_trigger %machineName_cmd
+Fields:
+
+PARENT_REFERENCE
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#Describes")
+        ?(.sourceID = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasCodomain")
+                ?(.targetID = REF)
+                .sourceID) // ID of StateVariable that instantiates this StateMachine
+        .targetID // ID of Component that contains that StateVariable
+machineId
+    (Trigger, Raw "stringEscape")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#StateMachine")
+        .id
+machineName
+    (Required)
+    DOC.entities[*]
+        ?(.id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasCodomain")
+                ?(.targetID = REF)
+                .sourceID) // ID of StateVariable that instantiates this StateMachine
+        .name
+modes
+    (Multi ", ")
+    DOC.entities[*]
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasState")
+                ?(.sourceID = REF)
+                .targetID)
+        .name
+hasTriggers // look for any HasTrigger relation attached to any Transition in this statemachine
+    (Required)
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#HasTrigger")
+        ?(.sourceID = 
+            DOC.relationships[*]
+                [
+                    ?(.metamodelRelationshipID ~= ".*#HasStartState"),
+                    ?(.metamodelRelationshipID ~= ".*#HasEndState")
+                ]
+                ?(.targetID = 
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#HasState")
+                        ?(.sourceID = REF)
+                        .targetID) // ID of any state in this state machine
+                .sourceID) // ID of any transition in this state machine
+
+
+
+Template: State Transition
+// name = "%rawName", description = "%description", uuid = "%transitionId"
+// guardName = "%guardName", guardDescription = "%guardDescription", guardId = "%guardId"
+// triggerName = "%triggerName", triggerDescription = "%triggerDescription", triggerId = "%triggerId"
+(%start -> %finish%guard%trigger)
+Fields:
+PARENT_REFERENCE
+    (Required, Raw)
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#HasState")
+        ?(.targetID =
+            REF.^.attributes[*]
+                ?(.name = "sourceID")
+                .value) // ID of start state
+        .sourceID // ID of StateMachine that has that state
+transitionId
+    (Trigger, Raw "stringEscape")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Transition")
+        .id
+finish
+    (Required)
+    DOC.entities[*]
+        ?(.id = 
+          REF.^.attributes[*]
+            ?(.name = "targetID")
+          .value)
+        .name
+start
+    (Required)
+    DOC.entities[*]
+        ?(.id = 
+          REF.^.attributes[*]
+            ?(.name = "sourceID")
+          .value)
+        .name
+guard // done as a sub-template to catch string expression
+    (Body ", ")
+    (", %s") // format string adds comma if needed
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Guard")
+trigger
+    (Body ", ")
+    (", %s")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Trigger")
+rawName
+    (Raw "stringEscape")
+    REF.^.name
+description
+    (Raw "stringEscape")
+    REF.^.description
+guardId
+    (Raw "stringEscape")
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#HasGuard")
+        ?(.sourceID = REF)
+        .targetID
+guardName
+    (Raw "stringEscape")
+    DOC.entities[*]
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasGuard")
+                ?(.sourceID = REF)
+                .targetID)
+        .name
+guardDescription
+    (Raw "stringEscape")
+    DOC.entities[*]
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasGuard")
+                ?(.sourceID = REF)
+                .targetID)
+        .description
+triggerId
+    (Raw "stringEscape")
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#HasTrigger")
+        ?(.sourceID = REF)
+        .targetID
+triggerName
+    (Raw "stringEscape")
+    DOC.entities[*]
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasTrigger")
+                ?(.sourceID = REF)
+                .targetID)
+        .name
+triggerDescription
+    (Raw "stringEscape")
+    DOC.entities[*]
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasTrigger")
+                ?(.sourceID = REF)
+                .targetID)
+        .description
+
+
+Template: Transition Guard
+%expression
+Fields:
+PARENT_REFERENCE
+    (Required, Raw)
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#HasGuard")
+        ?(.targetID = REF.^.^.id)
+        .sourceID
+guardExpression
+    (Trigger, Raw "stringEscape")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Guard")
+        .attributes[*]
+            ?(.name = "expression")
+expression
+    (Body)
+
+
+Template: Transition Trigger
+%machineName_cmd == %machineName_trigger.%expression
+Fields:
+PARENT_REFERENCE
+    (Required)
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#HasTrigger")
+        ?(.targetID = REF.^.^.id)
+        .sourceID
+triggerExpression
+    (Trigger, Raw "stringEscape")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Trigger")
+        .attributes[*]
+            ?(.name = "expression")
+machineName
+    (Required)
+    DOC.entities[*]
+        ?(.id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasCodomain")
+                ?(.targetID =
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#HasState")
+                        ?(.targetID = 
+                            DOC.relationships[*]
+                                ?(.metamodelRelationshipID ~= ".*#HasStartState")
+                                ?(.sourceID =
+                                    DOC.relationships[*]
+                                        ?(.metamodelRelationshipID ~= ".*#HasTrigger")
+                                        ?(.targetID = REF.^.^.id)
+                                        .sourceID) // ID of transition that has this trigger
+                                .targetID) // ID of start state for that transition
+                        .sourceID) // ID of StateMachine that has that state
+                .sourceID) // ID of StateVariable that instantiates that StateMachine
+        .name // name of that StateVariable. Phew.
+expression
+    (Body)
+
+
+
+Template: StateBehavior
+assert %stateVar != %qualifier%state or %expression // name = "%rawName", description = "%description", uuid = "%rawId"
+Fields:
+
+PARENT_REFERENCE
+    (Required, Raw)
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#HasState")
+        ?(.targetID =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Describes")
+                ?(.targetID = REF.^.^.id)
+                .sourceID) // ID of State described by StateBehavior
+        .sourceID
+expressionAttr
+    (Trigger)
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#StateBehavior")
+        .attributes[*]
+            ?(.name = "expression") // use expression attr to capture string expression's parent reference
+stateVar
+    (Required)
+    DOC.entities[*]
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasCodomain")
+                ?(.targetID =
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#HasState")
+                        ?(.targetID =
+                            DOC.relationships[*]
+                                ?(.metamodelRelationshipID ~= ".*#Describes")
+                                ?(.targetID = REF.^.^.id)
+                                .sourceID) // ID of State described by StateBehavior
+                        .sourceID)
+                .sourceID)
+        .attributes[*]
+            ?(.name = "symbol")
+            .value
+qualifier
+    ("%s.")
+    DOC.entities[*]
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasCodomain")
+                ?(.targetID =
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#HasState")
+                        ?(.targetID =
+                            DOC.relationships[*]
+                                ?(.metamodelRelationshipID ~= ".*#Describes")
+                                ?(.targetID = REF.^.^.id)
+                                .sourceID) // ID of State described by StateBehavior
+                        .sourceID)
+                .sourceID)
+        .name
+state
+    (Required)
+    DOC.entities[*]
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Describes")
+                ?(.targetID = REF.^.^.id)
+                .sourceID)
+        .name
+expression
+    (Body)
+rawName
+    (Raw "stringEscape")
+    REF.^.^.name
+description
+    (Raw "stringEscape")
+    REF.^.^.description
+rawId
+    (Raw "stringEscape")
+    REF.^.^.id
+
+
+
+
+Template: Interaction Assertion
+assert %expression // name = "%rawName", description = "%description", uuid = "%rawId"
+Fields:
+
+PARENT_REFERENCE
+    DOC
+expressionAttr
+    (Trigger)
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#InteractionBehavior")
+        .attributes[*]
+            ?(.name = "expression") // use expression attr to capture string expression's parent reference
+expression
+    (Body)
+rawName
+    (Raw "stringEscape")
+    REF.^.^.name
+description
+    (Raw "stringEscape")
+    REF.^.^.description
+rawId
+    (Raw "stringEscape")
+    REF.^.^.id
+
+
+
+// Template: Goal
+// goal %goalName (tp begin, tp end) { // name = "%rawName", description = "%description", uuid = "%activityId"
+//     %stateConstraints
+// }
+// Fields:
+// 
+// PARENT_REFERENCE
+//     (Raw)
+//     DOC.relationships[*]
+//         ?(.metamodelRelationshipID ~= ".*#Represents")
+//         ?(.sourceID = 
+//             DOC.relationships[*]
+//                 ?(.metamodelRelationshipID ~= ".*#Contains")
+//                 ?(.targetID = REF)
+//                 .sourceID)
+//         .targetID
+// activityId
+//     (Trigger, Raw "stringEscape")
+//     DOC.entities[*]
+//         ?(.metamodelEntityID ~= ".*#Activity")
+//         .id
+// goalName
+//     REF.^.id // TODO - ask about the format for a named activity
+// stateConstraints
+//     (Body, Required)
+// rawName
+//     (Raw "stringEscape")
+//     REF.^.name
+// description
+//     (Raw "stringEscape")
+//     REF.^.description
+
+
+
+Template: Goal State Constraint
+goal %goalName (tp begin, tp end) { // name = "%activityName", description = "%activityDescription", uuid = "%activityId"
+    assert from begin to end %stateVar==%qualifier%state // name = "%rawName", description = "%description", uuid = "%stateConstraintId"
+}
+Fields:
+
+PARENT_REFERENCE
+    (Required, Raw)
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Activity")
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Imposes")
+                ?(.sourceID = REF)
+                .targetID)
+        .d3attributes.behavingElementID
+stateConstraintId
+    (Trigger, Raw "stringEscape")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#StateConstraint")
+        .id
+goalName
+    (Required)
+    REF
+stateVar
+    (Required)
+    DOC.entities[*]
+        ?(.id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasCodomain")
+                ?(.targetID = 
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#HasState")
+                        ?(.targetID =
+                            DOC.relationships[*]
+                                ?(.metamodelRelationshipID ~= ".*#Specifies")
+                                ?(.sourceID = REF)
+                                .targetID) // ID of State specified by StateConstraint
+                        .sourceID) // ID of StateMachine containing that state
+                .sourceID) // ID of StateVariable that instantiates that StateMachine
+        .attributes[*]
+            ?(.name = "symbol")
+            .value // symbol for that StateVariable, name of the state machine instance in translation
+qualifier
+    ("%s.")
+    DOC.entities[*]
+        ?(.id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasCodomain")
+                ?(.targetID = 
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#HasState")
+                        ?(.targetID =
+                            DOC.relationships[*]
+                                ?(.metamodelRelationshipID ~= ".*#Specifies")
+                                ?(.sourceID = REF)
+                                .targetID) // ID of State specified by StateConstraint
+                        .sourceID) // ID of StateMachine containing that state
+                .sourceID) // ID of StateVariable that instantiates that StateMachine
+        .name // name of that StateVariable, the name of the machine in translation
+state
+    (Required)
+    DOC.entities[*]
+        ?(.id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Specifies")
+                ?(.sourceID = REF)
+                .targetID)
+        .name
+rawName
+    (Raw "stringEscape")
+    REF.^.name
+description
+    (Raw "stringEscape")
+    REF.^.description
+activityId
+    (Raw "stringEscape")
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#Imposes")
+        ?(.sourceID = REF)
+        .targetID
+activityName
+    (Raw "stringEscape")
+    DOC.entitites[*]
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Imposes")
+                ?(.sourceID = REF)
+                .targetID)
+        .name
+activityDescription
+    (Raw "stringEscape")
+    DOC.entitites[*]
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Imposes")
+                ?(.sourceID = REF)
+                .targetID)
+        .description
+
+
+
+
+Template: Schedulable Constraint
+goal %goalName (tp begin, tp end) { // name = "%activityName", description = "%activityDescription", uuid = "%activityId"
+    assert from begin to end %expression // name = "%rawName", description = "%description", uuid = "%rawId"
+}
+Fields:
+
+PARENT_REFERENCE
+    (Raw)
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Activity")
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Imposes")
+                [
+                    ?(.targetID = REF.^.^.id).sourceID,
+                    ?(.sourceID = REF.^.^.id).targetID
+                ])
+        .d3attributes.behavingElementID
+expressionAttr
+    (Trigger)
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#SchedulableConstraint")
+        .attributes[*]
+            ?(.name = "expression") // use expression attr to capture string expression's parent reference
+goalName
+    (Required)
+    REF.^.^.id
+expression
+    (Body)
+rawId
+    (Raw "stringEscape")
+    REF.^.^.id
+rawName
+    (Raw "stringEscape")
+    REF.^.^.name
+description
+    (Raw "stringEscape")
+    REF.^.^.description
+activityId
+    (Raw "stringEscape")
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#Imposes")
+        ?(.targetID = REF.^.^.id)
+        .sourceID
+activityName
+    (Raw "stringEscape")
+    DOC.entitites[*]
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Imposes")
+                ?(.targetID = REF.^.^.id)
+                .sourceID)
+        .name
+activityDescription
+    (Raw "stringEscape")
+    DOC.entitites[*]
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Imposes")
+                ?(.targetID = REF.^.^.id)
+                .sourceID)
+        .description
+
+
+
+
+// TODO: add start and end timepoint lookups for newer format - also, are explicit start/end tp's really necessary?
+Template: Scenario
+scenario %scenarioName { // name = "%rawName", description = "%description", uuid = "%ruleId"
+    System instance_System
+    tp begin
+    tp end
+    %body
+}
+Fields:
+
+PARENT_REFERENCE
+    DOC
+ruleId
+    (Trigger, Raw "stringEscape")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Rule")
+        .id
+scenarioName
+    REF.^.name
+body
+    (Body)
+rawName
+    (Raw "stringEscape")
+    REF.^.name
+description
+    (Raw "stringEscape")
+    REF.^.description
+
+
+
+Template: Elaboration
+elaborate instance_System.instance_%component.%goalName(%beginTP%generatedBeginTP, %endTP%generatedEndTP)
+Fields:
+
+PARENT_REFERENCE
+    (Required, Raw)
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#IsTypedBy")
+        ?(.sourceID = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Imposes")
+                [
+                    ?(.targetID = REF).sourceID,
+                    ?(.sourceID = REF).targetID
+                ])
+        .targetID // ID of the scenario/Rule of that ExecutionContext
+constraintId
+    (Trigger, Raw "stringEscape")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#(State|Schedulable)Constraint")
+        .id
+component
+    (Required)
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Component")
+        ?(.id = 
+            DOC.entities[*]
+                ?(.id =
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#Imposes")
+                        [
+                            ?(.targetID = REF).sourceID,
+                            ?(.sourceID = REF).targetID
+                        ])
+                .d3attributes.behavingElementID)
+        .name
+goalName
+    (Required)
+    REF
+beginTP // if a declared timepoint exists, use it
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        ?(.id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#StartsWith")
+                ?(.sourceID = 
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#Imposes")
+                        [
+                            ?(.targetID = REF).sourceID,
+                            ?(.sourceID = REF).targetID
+                        ])
+                .targetID // ID of StartTimePoint for this activity
+                    *( DOC.entities[*]
+                        ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                        .d3attributes[
+                            ?(.sourceID = REF).targetID,
+                            ?(.targetID = REF).sourceID
+                        ] )) // repeatedly follows EqualsTemporalConstraint in either direction
+        .id // verifies type is TimePoint
+generatedBeginTP // if a declared timepoint does not exist, build a new one
+    ?(!?(DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        .id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#StartsWith")
+                ?(.sourceID = 
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#Imposes")
+                        [
+                            ?(.targetID = REF).sourceID,
+                            ?(.sourceID = REF).targetID
+                        ])
+                .targetID // ID of StartTimePoint for this activity
+                    *( DOC.entities[*] // repeatedly follow EqualsTemporalConstraint in either direction
+                        ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                        .d3attributes[
+                            ?(.sourceID = REF).targetID,
+                            ?(.targetID = REF).sourceID
+                        ] ))) // demand that no TimePoint matches
+    DOC.relationships[*] // then use some id from the set
+        ?(.metamodelRelationshipID ~= ".*#StartsWith")
+        ?(.sourceID = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Imposes")
+                [
+                    ?(.targetID = REF).sourceID,
+                    ?(.sourceID = REF).targetID
+                ])
+        .targetID // ID of StartTimePoint for this activity
+            *( DOC.entities[*]
+                ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                .d3attributes[
+                    ?(.sourceID = REF).targetID,
+                    ?(.targetID = REF).sourceID
+                ] )
+endTP
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        ?(.id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#EndsWith")
+                ?(.sourceID =
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#Imposes")
+                        [
+                            ?(.targetID = REF).sourceID,
+                            ?(.sourceID = REF).targetID
+                        ])
+                .targetID // ID of EndTimePoint for this activity
+                    *( DOC.entities[*]
+                        ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                        .d3attributes[
+                            ?(.sourceID = REF).targetID,
+                            ?(.targetID = REF).sourceID
+                        ] )) // repeatedly follows EqualsTemporalConstraint in either direction
+        .id // verifies type is TimePoint
+generatedEndTP // if a declared timepoint does not exist, build a new one
+    ?(!?(DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        .id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#EndsWith")
+                ?(.sourceID =
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#Imposes")
+                        [
+                            ?(.targetID = REF).sourceID,
+                            ?(.sourceID = REF).targetID
+                        ])
+                .targetID // ID of EndTimePoint for this activity
+                    *( DOC.entities[*] // repeatedly follow EqualsTemporalConstraint in either direction
+                        ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                        .d3attributes[
+                            ?(.sourceID = REF).targetID,
+                            ?(.targetID = REF).sourceID
+                        ] ))) // demand that no TimePoint matches
+    DOC.relationships[*] // then use some id from the set
+        ?(.metamodelRelationshipID ~= ".*#EndsWith")
+        ?(.sourceID = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Imposes")
+                [
+                    ?(.targetID = REF).sourceID,
+                    ?(.sourceID = REF).targetID
+                ])
+        .targetID // ID of EndTimePoint for this activity
+            *( DOC.entities[*]
+                ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                .d3attributes[
+                    ?(.sourceID = REF).targetID,
+                    ?(.targetID = REF).sourceID
+                ] )
+
+
+(NoDuplicates)
+Template: Timepoint
+tp %timePoint%generatedTimePoint // name = "%rawName%altName", description = "%description%altDescription", uuid = "%rawId%altId"
+Fields:
+
+PARENT_REFERENCE
+    (Required, Raw)
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#Contains")
+        ?(.targetID = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Contains")
+                ?(.targetID = 
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#(Starts|Ends)With")
+                        ?(.targetID = REF)
+                        .sourceID)
+                .sourceID) // ID of the swimlane/ExecutionContext of this Activity
+        .sourceID // ID of the scenario/Rule of that ExecutionContext
+        ?(HERE =
+            DOC.entities[*]
+                ?(.metamodelEntityID ~= ".*#Rule")
+                .id)
+activityEndPoint
+    (Trigger)
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#(Starts|Ends)With")
+        ?(.sourceID =
+            DOC.entities[*]
+                ?(.metamodelEntityID ~= ".*#Activity")
+                .id)
+        .targetID
+timePoint
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        ?(.id = 
+            REF
+                *( DOC.entities[*]
+                    ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                    .d3attributes[
+                        ?(.sourceID = REF).targetID,
+                        ?(.targetID = REF).sourceID
+                    ] )) // repeatedly follows EqualsTemporalConstraint in either direction
+        .id // verifies type is TimePoint
+generatedTimePoint
+    ?(!?(DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        .id = 
+            REF
+                *( DOC.entities[*] // repeatedly follow EqualsTemporalConstraint in either direction
+                    ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                    .d3attributes[
+                        ?(.sourceID = REF).targetID,
+                        ?(.targetID = REF).sourceID
+                    ] ))) // demand that no TimePoint matches
+    REF
+        *( DOC.entities[*]
+            ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+            .d3attributes[
+                ?(.sourceID = REF).targetID,
+                ?(.targetID = REF).sourceID
+            ] )
+rawName
+    (Raw "stringEscape")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        ?(.id = 
+            REF
+                *( DOC.entities[*]
+                    ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                    .d3attributes[
+                        ?(.sourceID = REF).targetID,
+                        ?(.targetID = REF).sourceID
+                    ] )) // repeatedly follows EqualsTemporalConstraint in either direction
+        .name
+altName
+    (Raw "stringEscape")
+    ?(!?(DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        .id = 
+            REF
+                *( DOC.entities[*] // repeatedly follow EqualsTemporalConstraint in either direction
+                    ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                    .d3attributes[
+                        ?(.sourceID = REF).targetID,
+                        ?(.targetID = REF).sourceID
+                    ] ))) // demand that no TimePoint matches
+    DOC.entities[*]
+        ?(.id = 
+            REF
+                *( DOC.entities[*]
+                    ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                    .d3attributes[
+                        ?(.sourceID = REF).targetID,
+                        ?(.targetID = REF).sourceID
+                    ] ))
+        .name
+description
+    (Raw "stringEscape")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        ?(.id = 
+            REF
+                *( DOC.entities[*]
+                    ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                    .d3attributes[
+                        ?(.sourceID = REF).targetID,
+                        ?(.targetID = REF).sourceID
+                    ] )) // repeatedly follows EqualsTemporalConstraint in either direction
+        .description
+altDescription
+    (Raw "stringEscape")
+    ?(!?(DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        .id = 
+            REF
+                *( DOC.entities[*] // repeatedly follow EqualsTemporalConstraint in either direction
+                    ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                    .d3attributes[
+                        ?(.sourceID = REF).targetID,
+                        ?(.targetID = REF).sourceID
+                    ] ))) // demand that no TimePoint matches
+    DOC.entities[*]
+        ?(.id = 
+            REF
+                *( DOC.entities[*]
+                    ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                    .d3attributes[
+                        ?(.sourceID = REF).targetID,
+                        ?(.targetID = REF).sourceID
+                    ] ))
+        .description
+rawId
+    (Raw "stringEscape")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        ?(.id = 
+            REF
+                *( DOC.entities[*]
+                    ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                    .d3attributes[
+                        ?(.sourceID = REF).targetID,
+                        ?(.targetID = REF).sourceID
+                    ] )) // repeatedly follows EqualsTemporalConstraint in either direction
+        .id // verifies type is TimePoint
+altId
+    (Raw "stringEscape")
+    ?(!?(DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        .id = 
+            REF
+                *( DOC.entities[*] // repeatedly follow EqualsTemporalConstraint in either direction
+                    ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                    .d3attributes[
+                        ?(.sourceID = REF).targetID,
+                        ?(.targetID = REF).sourceID
+                    ] ))) // demand that no TimePoint matches
+    REF
+        *( DOC.entities[*]
+            ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+            .d3attributes[
+                ?(.sourceID = REF).targetID,
+                ?(.targetID = REF).sourceID
+            ] )
+
+
+
+Template: Precedes Constraint
+%beginTP%generatedBeginTP -> %minDelay%maxDelay%endTP%generatedEndTP // name = "%rawName", description = "%description", uuid = "%precedesId"
+Fields:
+
+PARENT_REFERENCE
+    (Raw)
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#Rule")
+        ?(.id =
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Contains")
+                ?(.targetID = REF)
+                .sourceID)
+        .id
+precedesId
+    (Trigger, Raw "stringEscape")
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#PrecedesTemporalConstraint")
+        .id
+minDelay
+    (Raw)
+    ("[%ss, ") // build the first half of the interval if possible
+    REF.^.attributes
+        ?([*]?(.name ~= "min|max").value ~= "[1-9].*") // one of min or max is non-zero
+        [*]?(.name = "min").value
+maxDelay
+    (Raw)
+    ("%ss] ") // build the first half of the interval if possible
+    REF.^.attributes
+        ?([*]?(.name ~= "min|max").value ~= "[1-9].*") // one of min or max is non-zero
+        [*]?(.name = "max").value
+
+beginTP // if a declared timepoint exists, use it
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        ?(.id = 
+            REF.^.d3attributes.sourceID
+                    *( DOC.entities[*]
+                        ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                        .d3attributes[
+                            ?(.sourceID = REF).targetID,
+                            ?(.targetID = REF).sourceID
+                        ] )) // repeatedly follows EqualsTemporalConstraint in either direction
+        .id // verifies type is TimePoint
+generatedBeginTP // if a declared timepoint does not exist, build a new one
+    ?(!?(DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        .id = 
+            REF.^.d3attributes.sourceID
+                    *( DOC.entities[*] // repeatedly follow EqualsTemporalConstraint in either direction
+                        ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                        .d3attributes[
+                            ?(.sourceID = REF).targetID,
+                            ?(.targetID = REF).sourceID
+                        ] ))) // demand that no TimePoint matches
+    REF.^.d3attributes.sourceID
+        *( DOC.entities[*]
+            ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+            .d3attributes[
+                ?(.sourceID = REF).targetID,
+                ?(.targetID = REF).sourceID
+            ] )
+endTP
+    DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        ?(.id = 
+            REF.^.d3attributes.targetID
+                    *( DOC.entities[*]
+                        ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                        .d3attributes[
+                            ?(.sourceID = REF).targetID,
+                            ?(.targetID = REF).sourceID
+                        ] )) // repeatedly follows EqualsTemporalConstraint in either direction
+        .id // verifies type is TimePoint
+generatedEndTP // if a declared timepoint does not exist, build a new one
+    ?(!?(DOC.entities[*]
+        ?(.metamodelEntityID ~= ".*#TimePoint")
+        .id = 
+            REF.^.d3attributes.targetID
+                    *( DOC.entities[*] // repeatedly follow EqualsTemporalConstraint in either direction
+                        ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                        .d3attributes[
+                            ?(.sourceID = REF).targetID,
+                            ?(.targetID = REF).sourceID
+                        ] ))) // demand that no TimePoint matches
+    REF.^.d3attributes.targetID
+        *( DOC.entities[*]
+            ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+            .d3attributes[
+                ?(.sourceID = REF).targetID,
+                ?(.targetID = REF).sourceID
+            ] )
+rawName
+    (Raw "stringEscape")
+    REF.^.name
+description
+    (Raw "stringEscape")
+    REF.^.description
