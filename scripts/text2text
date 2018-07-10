@@ -1,0 +1,5 @@
+#!/bin/bash
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )
+
+java -jar ${DIR}/../target/text2text-1.0.1-SNAPSHOT-jar-with-dependencies.jar "$@"

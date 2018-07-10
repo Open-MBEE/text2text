@@ -22,8 +22,7 @@ import org.json.JSONObject;
 import gov.nasa.jpl.text2text.TemplateParser.*;
 import gov.nasa.jpl.text2text.TranslationParser.*;
 
-import gov.nasa.jpl.jsonPath2.JsonNode;
-import gov.nasa.jpl.jsonPath2.Path;
+import gov.nasa.jpl.jsonPath2.*;
 
 import static gov.nasa.jpl.jsonPath2.Utils.*;
 
@@ -135,16 +134,6 @@ class Template {
    */
   public Collection<Template> getAllTemplates() {
     return translationDescription.values();
-  }
-  
-  /**
-   * Finds all parts of the target code that match the specified template.
-   * @param target The target code to look in
-   * @return A MatchRegistrar, with each TemplateMatch representing one instance of the template in the target.
-   */
-  public MatchRegistrar matchToTarget(String target) {
-    // TODO: Implement this
-    throw new UnsupportedOperationException("Not implemented yet.");
   }
   
   /**
@@ -358,7 +347,7 @@ class Template {
    * @see Template#fromJSON(JSONObject, TranslationDescription)
    * @see Template#fromJSON(JSONObject, String, TranslationDescription)
    */
-  public static Template fromJSON(JSONObject jsonObj) throws S2KParseException {
+  public static Template fromJSON(JSONObject jsonObj) throws IllegalArgumentException {
     return fromJSON(jsonObj, null, null);
   }
   /**
@@ -372,7 +361,7 @@ class Template {
    * @see Template#fromJSON(JSONObject, TranslationDescription)
    * @see Template#fromJSON(JSONObject, String, TranslationDescription)
    */
-  public static Template fromJSON(JSONObject jsonObj, String name) throws S2KParseException {
+  public static Template fromJSON(JSONObject jsonObj, String name) throws IllegalArgumentException {
     return fromJSON(jsonObj, name, null);
   }
   /**
@@ -386,7 +375,7 @@ class Template {
    * @see Template#fromJSON(JSONObject, String)
    * @see Template#fromJSON(JSONObject, String, TranslationDescription)
    */
-  public static Template fromJSON(JSONObject jsonObj, TranslationDescription translationDescription) throws S2KParseException {
+  public static Template fromJSON(JSONObject jsonObj, TranslationDescription translationDescription) throws IllegalArgumentException {
     return fromJSON(jsonObj, null, translationDescription);
   }
   /**
@@ -401,10 +390,10 @@ class Template {
    * @see Template#fromJSON(JSONObject, String)
    * @see Template#fromJSON(JSONObject, TranslationDescription)
    */
-  public static Template fromJSON(JSONObject jsonObj, String name, TranslationDescription translationDescription) throws S2KParseException {
+  public static Template fromJSON(JSONObject jsonObj, String name, TranslationDescription translationDescription) throws IllegalArgumentException {
     try {
       if (!jsonObj.optString("_type", "Template").equals("Template")) {
-        throw new S2KParseException("Could not parse JSON as a Template.");
+        throw new IllegalArgumentException("Could not parse JSON as a Template.");
       }
       
       Template output;
@@ -445,7 +434,7 @@ class Template {
       return output;
       
     } catch (JSONException e) {
-      throw new S2KParseException("Could not parse JSON as a Template.", e);
+      throw new IllegalArgumentException("Could not parse JSON as a Template.", e);
     }
   }
   
@@ -726,12 +715,12 @@ class Template {
     //   }
     // }
 
-    public static Field fromString(String fieldStr) throws S2KParseException {
+    public static Field fromString(String fieldStr) throws IllegalArgumentException {
       String name = fieldStr.replace(FIELD_PREFIX, "");
       if (name.matches("[a-zA-Z0-9_]+")) {
         return new Field(name);
       } else {
-        throw new S2KParseException("Could not parse string as a Field. (Are you using the old format?)");
+        throw new IllegalArgumentException("Could not parse string as a Field. (Are you using the old format?)");
       }
     }
     
@@ -812,7 +801,7 @@ class Template {
      * @see {@link Field#toJSON()}
      * @see {@link Field#toJSON(boolean)}
      */
-    public static Field fromJSON(Object jsonObj) throws S2KParseException {
+    public static Field fromJSON(Object jsonObj) throws IllegalArgumentException {
       try {
         if (jsonObj instanceof String) {
           return Field.fromString((String) jsonObj);
@@ -820,7 +809,7 @@ class Template {
         
         JSONObject trueJsonObj = (JSONObject) jsonObj;
         if (!trueJsonObj.getString("_type").equals("Field")) {
-          throw new S2KParseException("Could not parse JSON as a Field.");
+          throw new IllegalArgumentException("Could not parse JSON as a Field.");
         }
         return new Field(
             trueJsonObj.getString("name"),
@@ -836,7 +825,7 @@ class Template {
             trueJsonObj.optBoolean("isNecessary", false),
             trueJsonObj.optBoolean("isMulti", false));
       } catch (JSONException e) {
-        throw new S2KParseException("Could not parse JSON as a Field.");
+        throw new IllegalArgumentException("Could not parse JSON as a Field.");
       }
     }
     
@@ -993,20 +982,20 @@ class Template {
      * @see {@link Component#toJSON()}
      * @see {@link Component#toJSON(boolean)}
      */
-    public static Component fromJSON(Object jsonObj) throws S2KParseException {
+    public static Component fromJSON(Object jsonObj) throws IllegalArgumentException {
       if (jsonObj instanceof String) {
         return new Component((String) jsonObj);
       } else if (jsonObj instanceof JSONObject) {
         JSONObject trueJsonObj = (JSONObject) jsonObj;
         
         if (trueJsonObj.optString("_type", "Component").equals("Component")) {
-          throw new S2KParseException("Could not parse JSON as a Component.");
+          throw new IllegalArgumentException("Could not parse JSON as a Component.");
         }
         
         return new Component(trueJsonObj.getString("content"),
                              trueJsonObj.optBoolean("isField", false));
       } else {
-        throw new S2KParseException("Could not parse JSON as a Component.");
+        throw new IllegalArgumentException("Could not parse JSON as a Component.");
       }
     }
   }
@@ -1125,7 +1114,7 @@ class Template {
         if (fielddef.path() != null) {
           try {
             output.dataSource.put(field.name, Path.fromPathStr(fielddef.path().getText()));
-          } catch (S2KParseException e) {
+          } catch (IllegalArgumentException e) {
             return Optional.empty();
           }
         } else if (!field.isBody) {
