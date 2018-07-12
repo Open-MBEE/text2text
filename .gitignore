@@ -2,6 +2,7 @@ src/generatedCode
 generatedSrc
 resources/*.java
 output
+grammars/grammar-test
 
 *.DS_Store
 *.tokens

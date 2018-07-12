@@ -172,7 +172,7 @@ public class TranslationDescription extends LinkedHashMap<String, Template> {
     plugins.addPreprocessor(Preprocessors::mmsFlatten, "flatten", "mms", "mmsJson", "jsonMMS", "flattenMMS", "mmsFlatten");
     plugins.addPreprocessor(Preprocessors.splitStrings( Arrays.asList(";s",";e") ), "becosStrings", "becosStrs", "becosStr", "becos");
     plugins.addPreprocessor(Preprocessors::replaceLatex, "replace latex", "replaceLatex", "repLatex", "latex");
-    plugins.addPreprocessor(Preprocessors::addCounter, "add counter", "addCounter", "counter", "count");
+    plugins.addPreprocessor(Preprocessors::addCounter, "add counter", "addCounter", "counter", "count", "addCtr", "add ctr", "ctr");
     
     plugins.addSanitizer(s -> s, "default", "def", "none", "identity");
     plugins.addSanitizer(identSanitizer, "identifier", "ident", "name");
@@ -348,7 +348,7 @@ public class TranslationDescription extends LinkedHashMap<String, Template> {
         if (inputs.size() > 1) {
           nativeFn = buildKeywordNative(inputs);
         } else {
-          nativeFn = getNative(name);
+          nativeFn = getNative(inputs.get(0));
         }
       } else {
         logger.warning("Could not recognize option %s.", name);

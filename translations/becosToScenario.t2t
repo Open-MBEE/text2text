@@ -1,5 +1,6 @@
-Preprocessor: "becos", "latex", "counter"
-Sanitizer: "identifier"
+Preprocessor: "latex", "becos", "counter"
+SanitizeFn: "identifier"
+NativeFn: "none"
 
 
 Template: Scenario File
@@ -166,7 +167,7 @@ varName
         ?(.name = "symbol")
         .value
 value
-    (Raw)
+    (Required, Raw)
     REF.value
 rawName
     (Raw "stringEscape")
@@ -700,40 +701,6 @@ rawId
 
 
 
-// Template: Goal
-// goal %goalName (tp begin, tp end) { // name = "%rawName", description = "%description", uuid = "%activityId"
-//     %stateConstraints
-// }
-// Fields:
-// 
-// PARENT_REFERENCE
-//     (Raw)
-//     DOC.relationships[*]
-//         ?(.metamodelRelationshipID ~= ".*#Represents")
-//         ?(.sourceID = 
-//             DOC.relationships[*]
-//                 ?(.metamodelRelationshipID ~= ".*#Contains")
-//                 ?(.targetID = REF)
-//                 .sourceID)
-//         .targetID
-// activityId
-//     (Trigger, Raw "stringEscape")
-//     DOC.entities[*]
-//         ?(.metamodelEntityID ~= ".*#Activity")
-//         .id
-// goalName
-//     REF.^.id // TODO - ask about the format for a named activity
-// stateConstraints
-//     (Body, Required)
-// rawName
-//     (Raw "stringEscape")
-//     REF.^.name
-// description
-//     (Raw "stringEscape")
-//     REF.^.description
-
-
-
 Template: Goal State Constraint
 goal %goalName (tp begin, tp end) { // name = "%activityName", description = "%activityDescription", uuid = "%activityId"
     assert from begin to end %stateVar==%qualifier%state // name = "%rawName", description = "%description", uuid = "%stateConstraintId"
@@ -756,8 +723,9 @@ stateConstraintId
         ?(.metamodelEntityID ~= ".*#StateConstraint")
         .id
 goalName
-    (Required)
-    REF
+    (Required, Raw)
+    ("activity_%s")
+    REF.^.__COUNTER // the number added by the counter preprocessor
 stateVar
     (Required)
     DOC.entities[*]
@@ -862,8 +830,9 @@ expressionAttr
         .attributes[*]
             ?(.name = "expression") // use expression attr to capture string expression's parent reference
 goalName
-    (Required)
-    REF.^.^.id
+    (Required, Raw)
+    ("activity_%s")
+    REF.^.^.__COUNTER // number added by counter preprocessor
 expression
     (Body)
 rawId
@@ -970,9 +939,12 @@ component
                 .d3attributes.behavingElementID)
         .name
 goalName
-    (Required)
-    REF
+    (Required, Raw)
+    ("activity_%s")
+    REF.^.__COUNTER
 beginTP // if a declared timepoint exists, use it
+    (Raw)
+    ("tp_%s")
     DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#TimePoint")
         ?(.id = 
@@ -992,8 +964,10 @@ beginTP // if a declared timepoint exists, use it
                             ?(.sourceID = REF).targetID,
                             ?(.targetID = REF).sourceID
                         ] )) // repeatedly follows EqualsTemporalConstraint in either direction
-        .id // verifies type is TimePoint
+        .__COUNTER // added by counter preprocessor
 generatedBeginTP // if a declared timepoint does not exist, build a new one
+    (Raw)
+    ("tp_%s")
     ?(!?(DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#TimePoint")
         .id = 
@@ -1013,23 +987,28 @@ generatedBeginTP // if a declared timepoint does not exist, build a new one
                             ?(.sourceID = REF).targetID,
                             ?(.targetID = REF).sourceID
                         ] ))) // demand that no TimePoint matches
-    DOC.relationships[*] // then use some id from the set
-        ?(.metamodelRelationshipID ~= ".*#StartsWith")
-        ?(.sourceID = 
-            DOC.relationships[*]
-                ?(.metamodelRelationshipID ~= ".*#Imposes")
-                [
-                    ?(.targetID = REF).sourceID,
-                    ?(.sourceID = REF).targetID
-                ])
-        .targetID // ID of StartTimePoint for this activity
-            *( DOC.entities[*]
-                ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
-                .d3attributes[
-                    ?(.sourceID = REF).targetID,
-                    ?(.targetID = REF).sourceID
-                ] )
+    DOC.entities[*]
+        ?(.id =
+            DOC.relationships[*] // then use some id from the set
+                ?(.metamodelRelationshipID ~= ".*#StartsWith")
+                ?(.sourceID = 
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#Imposes")
+                        [
+                            ?(.targetID = REF).sourceID,
+                            ?(.sourceID = REF).targetID
+                        ])
+                .targetID // ID of StartTimePoint for this activity
+                    *( DOC.entities[*]
+                        ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                        .d3attributes[
+                            ?(.sourceID = REF).targetID,
+                            ?(.targetID = REF).sourceID
+                        ] ))
+        .__COUNTER // added by counter preprocessor
 endTP
+    (Raw)
+    ("tp_%s")
     DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#TimePoint")
         ?(.id = 
@@ -1049,8 +1028,10 @@ endTP
                             ?(.sourceID = REF).targetID,
                             ?(.targetID = REF).sourceID
                         ] )) // repeatedly follows EqualsTemporalConstraint in either direction
-        .id // verifies type is TimePoint
+        .__COUNTER // added by counter preprocessor
 generatedEndTP // if a declared timepoint does not exist, build a new one
+    (Raw)
+    ("tp_%s")
     ?(!?(DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#TimePoint")
         .id = 
@@ -1070,22 +1051,25 @@ generatedEndTP // if a declared timepoint does not exist, build a new one
                             ?(.sourceID = REF).targetID,
                             ?(.targetID = REF).sourceID
                         ] ))) // demand that no TimePoint matches
-    DOC.relationships[*] // then use some id from the set
-        ?(.metamodelRelationshipID ~= ".*#EndsWith")
-        ?(.sourceID = 
-            DOC.relationships[*]
-                ?(.metamodelRelationshipID ~= ".*#Imposes")
-                [
-                    ?(.targetID = REF).sourceID,
-                    ?(.sourceID = REF).targetID
-                ])
-        .targetID // ID of EndTimePoint for this activity
-            *( DOC.entities[*]
-                ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
-                .d3attributes[
-                    ?(.sourceID = REF).targetID,
-                    ?(.targetID = REF).sourceID
-                ] )
+    DOC.entities[*]
+        ?(.id =
+            DOC.relationships[*] // then use some id from the set
+                ?(.metamodelRelationshipID ~= ".*#EndsWith")
+                ?(.sourceID = 
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#Imposes")
+                        [
+                            ?(.targetID = REF).sourceID,
+                            ?(.sourceID = REF).targetID
+                        ])
+                .targetID // ID of EndTimePoint for this activity
+                    *( DOC.entities[*]
+                        ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                        .d3attributes[
+                            ?(.sourceID = REF).targetID,
+                            ?(.targetID = REF).sourceID
+                        ] ))
+        .__COUNTER // added by counter preprocessor
 
 
 (NoDuplicates)
@@ -1121,6 +1105,8 @@ activityEndPoint
                 .id)
         .targetID
 timePoint
+    (Raw)
+    ("tp_%s")
     DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#TimePoint")
         ?(.id = 
@@ -1131,8 +1117,10 @@ timePoint
                         ?(.sourceID = REF).targetID,
                         ?(.targetID = REF).sourceID
                     ] )) // repeatedly follows EqualsTemporalConstraint in either direction
-        .id // verifies type is TimePoint
+        .__COUNTER // added by counter preprocessor
 generatedTimePoint
+    (Raw)
+    ("tp_%s")
     ?(!?(DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#TimePoint")
         .id = 
@@ -1143,13 +1131,16 @@ generatedTimePoint
                         ?(.sourceID = REF).targetID,
                         ?(.targetID = REF).sourceID
                     ] ))) // demand that no TimePoint matches
-    REF
-        *( DOC.entities[*]
-            ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
-            .d3attributes[
-                ?(.sourceID = REF).targetID,
-                ?(.targetID = REF).sourceID
-            ] )
+    DOC.entities[*]
+        ?(.id =
+            REF
+                *( DOC.entities[*]
+                    ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                    .d3attributes[
+                        ?(.sourceID = REF).targetID,
+                        ?(.targetID = REF).sourceID
+                    ] ))
+        .__COUNTER // added by counter preprocessor
 rawName
     (Raw "stringEscape")
     DOC.entities[*]
@@ -1288,6 +1279,8 @@ maxDelay
         [*]?(.name = "max").value
 
 beginTP // if a declared timepoint exists, use it
+    (Raw)
+    ("tp_%s")
     DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#TimePoint")
         ?(.id = 
@@ -1298,8 +1291,10 @@ beginTP // if a declared timepoint exists, use it
                             ?(.sourceID = REF).targetID,
                             ?(.targetID = REF).sourceID
                         ] )) // repeatedly follows EqualsTemporalConstraint in either direction
-        .id // verifies type is TimePoint
+        .__COUNTER // created by counter preprocessor
 generatedBeginTP // if a declared timepoint does not exist, build a new one
+    (Raw)
+    ("tp_%s")
     ?(!?(DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#TimePoint")
         .id = 
@@ -1310,14 +1305,19 @@ generatedBeginTP // if a declared timepoint does not exist, build a new one
                             ?(.sourceID = REF).targetID,
                             ?(.targetID = REF).sourceID
                         ] ))) // demand that no TimePoint matches
-    REF.^.d3attributes.sourceID
-        *( DOC.entities[*]
-            ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
-            .d3attributes[
-                ?(.sourceID = REF).targetID,
-                ?(.targetID = REF).sourceID
-            ] )
+    DOC.entities[*]
+        ?(.id =
+            REF.^.d3attributes.sourceID
+                *( DOC.entities[*]
+                    ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                    .d3attributes[
+                        ?(.sourceID = REF).targetID,
+                        ?(.targetID = REF).sourceID
+                    ] ))
+        .__COUNTER // created by counter preprocessor
 endTP
+    (Raw)
+    ("tp_%s")
     DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#TimePoint")
         ?(.id = 
@@ -1328,8 +1328,10 @@ endTP
                             ?(.sourceID = REF).targetID,
                             ?(.targetID = REF).sourceID
                         ] )) // repeatedly follows EqualsTemporalConstraint in either direction
-        .id // verifies type is TimePoint
+        .__COUNTER // created by counter preprocessor
 generatedEndTP // if a declared timepoint does not exist, build a new one
+    (Raw)
+    ("tp_%s")
     ?(!?(DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#TimePoint")
         .id = 
@@ -1340,13 +1342,16 @@ generatedEndTP // if a declared timepoint does not exist, build a new one
                             ?(.sourceID = REF).targetID,
                             ?(.targetID = REF).sourceID
                         ] ))) // demand that no TimePoint matches
-    REF.^.d3attributes.targetID
-        *( DOC.entities[*]
-            ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
-            .d3attributes[
-                ?(.sourceID = REF).targetID,
-                ?(.targetID = REF).sourceID
-            ] )
+    DOC.entities[*]
+        ?(.id =
+            REF.^.d3attributes.targetID
+                *( DOC.entities[*]
+                    ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                    .d3attributes[
+                        ?(.sourceID = REF).targetID,
+                        ?(.targetID = REF).sourceID
+                    ] ))
+        .__COUNTER // created by counter preprocessor
 rawName
     (Raw "stringEscape")
     REF.^.name
