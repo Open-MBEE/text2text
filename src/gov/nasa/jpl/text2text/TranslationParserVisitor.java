@@ -17,6 +17,24 @@ public interface TranslationParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTemplatefile(TranslationParser.TemplatefileContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link TranslationParser#optionspec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOptionspec(TranslationParser.OptionspecContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TranslationParser#optionname}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOptionname(TranslationParser.OptionnameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TranslationParser#optionvalue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOptionvalue(TranslationParser.OptionvalueContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TranslationParser#templatedef}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

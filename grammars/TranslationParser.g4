@@ -8,7 +8,14 @@ import JsonPath2Parser ;
  * Defines template file, a collection of templates and field definitions.
  */
 
-templatefile : templatedef* ;
+templatefile : optionspec*
+               templatedef*
+             ;
+
+optionspec : optionname COLON optionvalue (COMMA optionvalue)* ;
+
+optionname : IDENTIFIER ;
+optionvalue : STRING ;
 
 templatedef : (OPENROUND templateoption* CLOSEROUND)?
               STARTTEMPLATE template ENDTEMPLATE

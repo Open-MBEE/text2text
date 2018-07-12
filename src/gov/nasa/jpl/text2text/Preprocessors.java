@@ -25,6 +25,8 @@ import static gov.nasa.jpl.jsonPath2.Utils.*;
  *
  */
 public class Preprocessors {
+  private static int COUNTER = 0;
+  
   /// Public methods
   
   public static JsonNode def(String str) {
@@ -56,6 +58,19 @@ public class Preprocessors {
   
   public static JsonNode replaceLatex(String str) {
     return JsonNode.buildFrom( innerReplaceLatex( JsonNode.readFrom(str) ) );
+  }
+  public static JsonNode addCounter(String str) {
+    return JsonNode.buildFrom( innerAddCounter( JsonNode.readFrom(str) ) );
+  }
+  
+  /**
+   * Combines two preprocessors into one.
+   * @param first The first Preprocessor to apply
+   * @param second The second Preprocessor to apply
+   * @return A Preprocessor that acts like second(first( . ))
+   */
+  public static Function<String,JsonNode> compose(Function<String, JsonNode> first, Function<String, JsonNode> second) {
+    return first.andThen( JsonNode::toString ).andThen( second );
   }
   
   /// Private helpers
@@ -124,54 +139,57 @@ public class Preprocessors {
     }
   }
   private static Object innerSplitStrings(JsonNode obj, List<String> delimiters) {
-    if (obj.as(ValueNode.class).map( vn -> vn.value() instanceof String ).orElse(false) ){
-      List<String> strings = new LinkedList<String>();
-      strings.add(obj.as(ValueNode.class).get().value().toString());
-      for (String delim : delimiters) {
-        strings = strings.stream()
-          .flatMap( s -> Arrays.asList( s.split(delim) ).stream() )
-          .filter( s -> !s.isEmpty() )
-          .collect( Collectors.toList() );
-      }
-
-      if (strings.size() == 1) {
-        return strings.get(0);
-
-      } else {
-        JSONArray output  = new JSONArray();
-        JSONArray current = output;
-
-        for (String s : strings) {
-          current.put(s);
-          JSONArray next = new JSONArray();
-          current.put(next);
-          current = next;
-        }
-
-        return output;
-      }
-
-    } else if (obj instanceof ObjectNode) {
-      JSONObject output = new JSONObject();
-
-      obj.as(ObjectNode.class).get()
-        .entries().stream()
-        .map(onValue( val -> innerSplitStrings(val, delimiters) ))
-        .forEach(consumeEntry( output::put ));
-
-      return output;
-
-    } else if (obj instanceof ArrayNode) {
-      JSONArray output = new JSONArray();
-
-      obj.as(ArrayNode.class).get()
-        .values().forEach( val -> output.put(innerSplitStrings(val, delimiters)) );
-
-      return output;
-
-    } else {
-      return obj.as(ValueNode.class).map( ValueNode::value ).orElse(obj);
-    }
+    return Utils.firstPresent(
+          () -> obj.as(ValueNode.class)
+            .map( ValueNode::value )
+            .filter( value -> value instanceof String )
+            .map( Object::toString ) // actually a do-nothing, but a clean way to get String type
+            .map( str -> {
+              List<String> strings = Arrays.asList(str);
+              for (String delim : delimiters) {
+                strings = strings.stream()
+                  .flatMap( s -> Arrays.asList( s.split(delim) ).stream() )
+                  .filter( s -> !s.isEmpty() )
+                  .collect( Collectors.toList() );
+              }
+  
+              if (strings.size() == 1) {
+                return strings.get(0);
+              }
+  
+              JSONArray output  = new JSONArray();
+              JSONArray current = output;
+  
+              for (String s : strings) {
+                current.put(s);
+                JSONArray next = new JSONArray();
+                current.put(next);
+                current = next;
+              }
+  
+              return output;
+            }),
+            
+          () -> obj.as(ObjectNode.class)
+            .map( onode -> {
+              JSONObject output = new JSONObject();
+              onode.entries().stream()
+                .map(onValue( val -> innerSplitStrings(val, delimiters) ))
+                .forEach(consumeEntry( output::put ));
+              return output;
+            }),
+            
+          () -> obj.as(ArrayNode.class)
+            .map( anode -> {
+              JSONArray output = new JSONArray();
+              anode.values().stream()
+                .map( val -> innerSplitStrings(val, delimiters) )
+                .forEach( output::put );
+              return output;
+            }),
+            
+          () -> obj.as(ValueNode.class).map( ValueNode::value )
+        ).orElseGet( () -> obj.toJSON() );
   }
   private static Object innerReplaceLatex(JsonNode node) {
     Function<String,String> sanitizeString = str ->
@@ -179,6 +197,8 @@ public class Preprocessors {
         .replaceAll("\\\\cdot", "*") // escaped twice, for java parser and regex parser
         .replaceAll("(?<!=)=(?!=)", "==") // replace single = with double ==
         .replaceAll("\\^", "**")
+        .replaceAll("\\\\left(\\(|\\[)", "(")
+        .replaceAll("\\\\right(\\)|\\])", ")")
       ;
     
     return Utils.firstPresent(
@@ -202,5 +222,25 @@ public class Preprocessors {
             return output;
           })
         ).orElseGet( () -> node.toJSON() );
+  }
+  private static Object innerAddCounter(JsonNode node) {
+    return Utils.firstPresent(
+          () -> node.as(ObjectNode.class)
+            .map( onode -> {
+              JSONObject output = new JSONObject().put("__COUNTER", ++COUNTER);
+              onode.entries().stream()
+                .map(onValue( Preprocessors::innerAddCounter ))
+                .forEach(consumeEntry( output::put ));
+              return output;
+            }),
+          () -> node.as(ArrayNode.class)
+            .map( anode -> {
+              JSONArray output = new JSONArray();
+              anode.values().stream()
+                .map( Preprocessors::innerAddCounter )
+                .forEach( output::put );
+              return output;
+            })
+        ).orElseGet( () -> node.toJSON() ); // ValueNode.toJSON() handles itself nicely
   }
 }

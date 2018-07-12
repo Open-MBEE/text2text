@@ -200,17 +200,17 @@ class Template {
           
           // lookup all instantiations that list this as their parent, and join them by the separator.
 //          String recursiveInstance = indent( instantiationRegistrar.get( templateMatch.get( triggerField.name ) ).stream()
-          String recursiveInstance = indent( templateMatch.getFirst(triggerField.name)
+          String recursiveInstance = templateMatch.getFirst(triggerField.name)
               .map( instantiationRegistrar::get )
               .orElse( Collections.emptyList() )
               .stream()
               .filter( matchesRecursive )
               .map( TemplateMatch::getInstance )
               .flatMap( optStream() )
-              .collect( Collectors.joining(field.bodyJoiner) ), field.bodyIndent);
+              .collect( Collectors.joining(field.bodyJoiner) );
           
           if (!recursiveInstance.isEmpty()) {
-            instantiation += String.format(field.formatString, recursiveInstance);
+            instantiation += indent( String.format(field.formatString, recursiveInstance), field.bodyIndent);
           } else if (field.isNecessary) {
             return; // quit early, necessary body had no sub-instances
           }
@@ -248,12 +248,12 @@ class Template {
   public Optional<String> instantiateField(Field field, TemplateMatch templateMatch) {
     Function<String, String> processValue = value -> {
       if (!field.isRaw) {
-        value = translationDescription.sanitizeFn.apply(value);
+        value = translationDescription.plugins.sanitizer.apply(value);
       } else if (!field.alternateSanitizer.equals(DEFAULT_ALTERNATE_SANITIZER)) {
         value = translationDescription.plugins.getSanitizer(field.alternateSanitizer).apply(value);
       }
       
-      Optional<String> nativeOpt = translationDescription.nativeFn.apply(value);
+      Optional<String> nativeOpt = translationDescription.plugins.nativeFn.apply(value);
       if (nativeOpt.isPresent()) {
         if (field.isKeyword) {
           value = nativeOpt.get(); // use the keyword match

@@ -1,10 +1,13 @@
+Preprocessor: "becos", "latex", "counter"
+Sanitizer: "identifier"
 
-Template: K File
+
+Template: Scenario File
 %scalars
 
 %classes
 
-class System {
+class SystemClass {
     %classInstances
     %interactionBehaviors
 }
@@ -44,7 +47,7 @@ Template: Class Instance
 Fields:
 
 PARENT_REFERENCE
-    DOC // inserts into System Class
+    DOC // inserts into SystemClass
 className
     (Trigger)
     DOC.entities[*]
@@ -309,7 +312,7 @@ modes
                 .targetID)
         .name
 transitions
-    (Body ",\n")
+    (Body "\n,\n")
     ("{\n%s\n}")
     DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#Transition")
@@ -472,7 +475,7 @@ guard // done as a sub-template to catch string expression
         ?(.metamodelEntityID ~= ".*#Guard")
 trigger
     (Body ", ")
-    (", %s")
+    (")//, %s") // FIXME - triggers cause compilation issues further down the line, so omitting for now - need to fix the ScenarioToK file, which will require fixing global resolutions in Scenario
     DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#Trigger")
 rawName
@@ -903,7 +906,7 @@ activityDescription
 // TODO: add start and end timepoint lookups for newer format - also, are explicit start/end tp's really necessary?
 Template: Scenario
 scenario %scenarioName { // name = "%rawName", description = "%description", uuid = "%ruleId"
-    System instance_System
+    SystemClass instance_SystemClass
     tp begin
     tp end
     %body
@@ -931,7 +934,7 @@ description
 
 
 Template: Elaboration
-elaborate instance_System.instance_%component.%goalName(%beginTP%generatedBeginTP, %endTP%generatedEndTP)
+elaborate instance_SystemClass.instance_%component.%goalName(%beginTP%generatedBeginTP, %endTP%generatedEndTP)
 Fields:
 
 PARENT_REFERENCE

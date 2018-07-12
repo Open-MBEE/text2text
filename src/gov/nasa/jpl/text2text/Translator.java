@@ -3,10 +3,9 @@ package gov.nasa.jpl.text2text;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Map;
@@ -18,7 +17,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+
 import org.json.JSONObject;
 
 import gov.nasa.jpl.jsonPath2.*;
@@ -33,8 +32,8 @@ import static gov.nasa.jpl.jsonPath2.Utils.*;
  */
 public class Translator {
   private TranslationDescription translationDescription;
-  private Collection<JsonNode> libraries;
-  private Function<String, JsonNode> preprocessor;
+//  private Collection<JsonNode> libraries;
+//  private Function<String, JsonNode> preprocessor;
   
   private Boolean useParallel;
   
@@ -48,10 +47,10 @@ public class Translator {
       List<String> logFileOptions   = Arrays.asList("logFile", "log", "lf", "l");
       List<String> errorFileOptions = Arrays.asList("errorFile", "errFile", "err", "ef", "e");
       List<String> configOptions    = Arrays.asList("config", "configuration", "conf", "con", "cfg");
-      List<String> librariesOptions        = Arrays.asList("libraries", "lib", "libs");
-      List<String> preprocessorOptions     = Arrays.asList("preprocessor", "prep");
-      List<String> nativeFunctionOptions   = Arrays.asList("nativeFunction", "nativeFn", "native", "nat");
-      List<String> sanitizeFunctionOptions = Arrays.asList("sanitizeFunction", "sanitizeFn", "sanitize", "san");
+      List<String> librariesOptions        = TranslationDescription.Plugins.librariesOptions;
+      List<String> preprocessorOptions     = TranslationDescription.Plugins.preprocessorOptions;
+      List<String> nativeFunctionOptions   = TranslationDescription.Plugins.nativeFunctionOptions;
+      List<String> sanitizeFunctionOptions = TranslationDescription.Plugins.sanitizeFunctionOptions;
       List<String> translationDescriptionOptions = Arrays.asList("translationDescription", "td");
       
       List<String> parallelFlags = Arrays.asList("parallel", "para", "p");
@@ -173,8 +172,8 @@ public class Translator {
 
       logger.log("Processing options...");
       
-      Plugins plugins = defaultPlugins();
-      plugins.logger = logger;
+//      Plugins plugins = defaultPlugins();
+//      plugins.logger = logger;
       
       
       Optional<String> inputOpt = Optional.of(getOption.apply(inFileOptions))
@@ -197,6 +196,7 @@ public class Translator {
       } else {
         logger.setOutputStream( System.out, Logger.MSG_TYPE.OUTPUT );
       }
+      TranslationDescription.defaultLogger = logger;
       
       Optional<String> tdFilePathOpt = getOption.apply(translationDescriptionOptions);
       if (tdFilePathOpt.isPresent()) {
@@ -220,30 +220,48 @@ public class Translator {
 //        logger.error("Translation description was valid JSON but could not be parsed. Exiting...");
 //        return;
 //      }
-      Optional<TranslationDescription> translationDescriptionOpt = tdFileOpt.flatMap(optOnError( TranslationDescription::fromString )).filter( td -> !td.isEmpty() );
+      Optional<TranslationDescription> translationDescriptionOpt = tdFileOpt
+          .flatMap(optOnError( str -> TranslationDescription.fromString(str) )).filter( td -> !td.isEmpty() );
       if (!translationDescriptionOpt.isPresent()) {
         logger.verbose("Could not parse file as Translation language. Exiting...");
         return;
       }
       TranslationDescription translationDescription = translationDescriptionOpt.get();
       
-      translationDescription.plugins = plugins;
+      TranslationDescription.Plugins plugins = translationDescription.plugins;
       translationDescription.setLogger(logger);
       
-      Function<String, JsonNode> preprocessor = plugins.getPreprocessor(getOption.apply(preprocessorOptions).orElse("default"));
-      logger.verbose("Preprocessor set to " + plugins.getCanonicalName(preprocessor) + ".");
+//      Function<String, JsonNode> preprocessor = plugins.getPreprocessor(getOption.apply(preprocessorOptions).orElse("default"));
+//      logger.verbose("Preprocessor set to " + plugins.getCanonicalName(preprocessor) + ".");
+        getOption.apply(preprocessorOptions)
+          .ifPresent( s -> Stream.of(s.split("\\+"))
+            .map( String::trim )
+            .map( plugins::getPreprocessor )
+            .map(splitStream( plugins::getCanonicalName ))
+            .reduce( (e1, e2) -> 
+              new AbstractMap.SimpleEntry<>(e1.getKey() + "+" + e2.getKey(), Preprocessors.compose(e1.getValue(), e2.getValue()))
+            ).ifPresent(consumeEntry( (name,fn) -> {
+              logger.verbose("Preprocessor set to %s.", name);
+              plugins.preprocessor = fn;
+            })));
       
-      translationDescription.sanitizeFn = plugins.getSanitizer(getOption.apply(sanitizeFunctionOptions).orElse("default"));
-      logger.verbose("Sanitize function set to " + plugins.getCanonicalName(translationDescription.sanitizeFn) + ".");
+      getOption.apply(sanitizeFunctionOptions)
+        .map(plugins::getSanitizer)
+        .ifPresent( fn -> {
+        plugins.sanitizer = fn;
+        logger.verbose("Sanitize function set to " + plugins.getCanonicalName(translationDescription.plugins.sanitizer) + ".");
+      });
       
       Optional<String> nativeOpt = getOption.apply(nativeFunctionOptions);
       Optional<String> keywordsOpt = nativeOpt.flatMap(readFilePath);
       if (keywordsOpt.isPresent()) {
         logger.verbose("Building native function from " + nativeOpt.get());
-        translationDescription.nativeFn = plugins.buildKeywordNative( Arrays.asList(keywordsOpt.get().split("\n")) );
+        translationDescription.plugins.nativeFn = plugins.buildKeywordNative( Arrays.asList(keywordsOpt.get().split("\n")) );
       } else {
-        translationDescription.nativeFn = plugins.getNative(nativeOpt.orElse("default"));
-        logger.verbose("Native function set to " + plugins.getCanonicalName(translationDescription.nativeFn));
+        nativeOpt.map(plugins::getNative).ifPresent( fn -> {
+          translationDescription.plugins.nativeFn = fn;
+        });
+        logger.verbose("Native function set to " + plugins.getCanonicalName(translationDescription.plugins.nativeFn));
       }
       
       logger.verbose("Searching for libraries...");
@@ -273,17 +291,17 @@ public class Translator {
         .collect( Collectors.toList() );
       
       if (libraries.isEmpty()) {
-        logger.warning("No valid libraries specified.");
+        logger.verbose("No libraries found.");
       } else {
         logger.verbose("Libraries found.");
       }
       
+      Boolean parallel = testFlag.apply(parallelFlags).orElse(true);
+
       logger.log("Options processed.");
       
-      Boolean parallel = testFlag.apply(parallelFlags).orElse(true);
-      
       // Actually run the translation:
-      Translator translator = new Translator(translationDescription, libraries, preprocessor);
+      Translator translator = new Translator(translationDescription);
       translator.useLogger(logger); // adopt the logging settings that we're already using.
       translator.useParallel(parallel);
       List<String> errors = translator.errors();
@@ -304,35 +322,13 @@ public class Translator {
   }
   
   /**
-   * Builds a new Translator using the given translation description and default libraries.
-   * @param translationDescription Specifies the templates to use and how their fields are to be found.
+   * Builds a new Translator using the given translation description
+   * @param translationDescription Specifies the templates to use and how their fields are to be found, and plugins object specifies rest
    */
   public Translator(TranslationDescription translationDescription) throws IllegalArgumentException {
-    this( translationDescription, Collections.emptyList() );
-  }
-  
-  /**
-   * Builds a new Translator using the given translation description and libraries.
-   * This completely specifies the behavior of the translator.
-   * @param translationDescription Specifies the templates to use and how their fields are to be found.
-   * @param libraries A collection of JSONObjects to be accessed by "LIB:" tags
-   */
-  public Translator(TranslationDescription translationDescription, Collection<JsonNode> libraries) {
-    this(translationDescription, libraries, Preprocessors::def);
-  }
-  
-  /**
-   * Builds a new Translator using the given translation description, libraries, and preprocessor.
-   * @param translationDescription Specifies the templates to use and how their fields are to be found.
-   * @param libraries A collection of JSONObjects to be accessed by "LIB:" tags
-   * @param preprocessor A function to transform the string input into a JSON structured input.
-   */
-  public Translator(TranslationDescription translationDescription, Collection<JsonNode> libraries, Function<String, JsonNode> preprocessor) {
     this.translationDescription = translationDescription;
-    this.libraries    = libraries;
-    this.preprocessor = preprocessor;
-    this.logger       = new Logger();
-    this.useParallel  = true;
+    this.logger = new Logger();
+    this.useParallel = true;
   }
   
   /**
@@ -346,7 +342,7 @@ public class Translator {
       long overallStart = System.currentTimeMillis();
       logger.log("Pre-processing...");
       long preprocessorStart = System.currentTimeMillis();
-      JsonNode model = preprocessor.apply(sourceString);
+      JsonNode model = translationDescription.plugins.preprocessor.apply(sourceString);
       long preprocessorEnd = System.currentTimeMillis();
       logger.log("Finished pre-processing.");
       logger.log("Pre-processing time: %.3f s", (preprocessorEnd - preprocessorStart) / 1000.0);
@@ -383,7 +379,7 @@ public class Translator {
     (useParallel ? translationDescription.values().parallelStream() : translationDescription.values().stream())
         .forEach( template -> {
           logger.verbose("Querying for template " + template.getName() + "...");
-          template.matchToSource(source, libraries).forEach( match ->
+          template.matchToSource(source, translationDescription.plugins.libraries).forEach( match ->
               matchRegistrar.register(template, match)); // associate each match individually with its template
           logger.verbose("Finished querying for template " + template.getName() + ".");
         });
@@ -457,7 +453,8 @@ public class Translator {
     return new JSONObject()
         .put("_type", "Translator")
         .put("translationDescription", translationDescription.toJSON())
-        .put("libraries", libraries);
+//        .put("libraries", libraries)
+        ;
   }
 
   /**
@@ -483,156 +480,10 @@ public class Translator {
     
     if (translationDescription == null) output.add("No translation description was set.");
     else if (translationDescription.isEmpty()) output.add("No templates were added to the translation description.");
-    if (libraries == null) output.add("Libraries collection is null.");
-    if (preprocessor == null) output.add("No preprocessor is set.");
+//    if (libraries == null) output.add("Libraries collection is null.");
+//    if (preprocessor == null) output.add("No preprocessor is set.");
     if (translationDescription != null) output.addAll(translationDescription.errors());
     
     return output;
-  }
-  
-  /**
-   * @return A Plugins object with some common functions and aliases added.
-   */
-  public static Plugins defaultPlugins() {
-    Function<String, String> identSanitizer = s -> {
-      s = s.replaceAll("[^a-zA-Z0-9]", "_");
-      if (s.matches("^[0-9].*")) {
-        s = "__" + s;
-      }
-      return s;
-    };
-    
-    Function<String, String> unidentSanitizer = s -> {
-      if (s.startsWith("__")) {
-        s = s.substring(2);
-      }
-      return s;
-    };
-    
-    Plugins plugins = new Plugins(null, identSanitizer, null, null);
-    plugins.addPreprocessor(Preprocessors::def, "default", "def", "none", "identity");
-//    plugins.addPreprocessor(Preprocessors::kParser, "K parser", "kParser", "k");
-    plugins.addPreprocessor(Preprocessors::jsonReflection, "json reflection", "jsonReflection", "reflection", "jsonReflect", "reflect");
-    plugins.addPreprocessor(Preprocessors::mmsFlatten, "flatten", "mms", "mmsJson", "jsonMMS", "flattenMMS", "mmsFlatten");
-    plugins.addPreprocessor(
-        Preprocessors.splitStrings( Arrays.asList(";s",";e") ).andThen( JsonNode::toString ).andThen( Preprocessors::replaceLatex ),
-        "becosStrings", "becosStrs", "becosStr", "becos");
-    
-    plugins.addSanitizer(s -> s, "default", "def", "none", "identity");
-    plugins.addSanitizer(identSanitizer, "identifier", "ident", "name");
-    plugins.addSanitizer(unidentSanitizer, "undo identifier", "undoIdentifier", "unidentifier", "undo ident", "undoIdent", "undo name", "undoName", "unname");
-    plugins.addSanitizer(StringEscapeUtils::escapeJava, "string escape", "stringEscape", "escape", "string", "escapeString", "escapeStr", "strEscape", "strEsc", "escStr", "str", "esc");
-    plugins.addSanitizer(StringEscapeUtils::unescapeJava, "string unescape", "stringUnescape", "unescape", "unescapeString", "unescapeStr", "strUnescape", "strUnesc", "unesc");
-    
-    plugins.addNative(s -> Optional.empty(), "default", "def", "none", "identity");
-    
-    return plugins;
-  }
-  
-  /// Public inner classes
-  
-  public static class Plugins {
-    /// Private constants
-
-    // global defaults, used to set instance defaults when not given
-    private static final Function<String, JsonNode> DEFAULT_PREPROCESSOR   = JsonNode::readFrom;
-    private static final Function<String, String>   DEFAULT_SANITIZER      = s -> s;
-    private static final Function<String, Optional<String>> DEFAULT_NATIVE = s -> Optional.empty();
-    
-    /// Public members
-    
-    // instance defaults, used as return values when specific values can't be found
-    public Function<String, JsonNode> defaultPreprocessor;
-    public Function<String, String>   defaultSanitizer;
-    public Function<String, Optional<String>> defaultNative;
-    
-    public Map<String, Function<String, JsonNode>> preprocessors   = new LinkedHashMap<>();
-    public Map<String, Function<String, String>>   sanitizers      = new LinkedHashMap<>();
-    public Map<String, Function<String, Optional<String>>> natives = new LinkedHashMap<>();
-    
-    /// Private members
-    
-    private Map<Function<?,?>, String> canonicalNames = new LinkedHashMap<>();
-    private Logger logger;
-    
-    /// Public methods
-    
-    public Plugins() {
-      this(null, null, null, null);
-    }
-    public Plugins(Function<String, JsonNode> defaultPreprocessor, Function<String, String> defaultSanitizer, Function<String, Optional<String>> defaultNative, Logger logger) {
-      this.defaultPreprocessor = ( defaultPreprocessor != null ? defaultPreprocessor : DEFAULT_PREPROCESSOR );
-      this.defaultSanitizer    = ( defaultSanitizer    != null ? defaultSanitizer    : DEFAULT_SANITIZER    );
-      this.defaultNative       = ( defaultNative       != null ? defaultNative       : DEFAULT_NATIVE       );
-      this.logger = (logger != null ? logger : Logger.SILENT_LOGGER);
-        
-      canonicalNames.put(this.defaultPreprocessor, "default");
-      canonicalNames.put(this.defaultSanitizer,    "default");
-      canonicalNames.put(this.defaultNative,       "default");
-    }
-    
-    public Function<String, JsonNode> getPreprocessor(String name) {
-      Function<String, JsonNode> output = preprocessors.get(name.toLowerCase());
-      if (output == null) {
-        logger.warning("Could not find preprocessor " + name + ". Using default.");
-        output = defaultPreprocessor;
-      } 
-      return output;
-    }
-    public Function<String, String> getSanitizer(String name) {
-      List<String> names = Arrays.asList( name.split("\\+") );
-      return names.stream()
-          .map( String::toLowerCase )
-          .map( splitStream(sanitizers::get) )
-          .peek(consumeEntry( (fn, nm) -> {
-            if (fn == null) logger.warning("Could not find sanitizer " + nm + ". Ignoring.");
-          }))
-          .map( Entry::getKey )
-          .filter( x -> x != null )
-          .reduce( Function::andThen )
-          .orElseGet( () -> {
-            logger.warning("Could not find sanitizer " + name + ". Using default.");
-            return defaultSanitizer;
-          });
-      
-    }
-    public Function<String, Optional<String>> getNative(String name) {
-      Function<String, Optional<String>> output = natives.get(name.toLowerCase());
-      if (output == null) {
-        logger.warning("Could not find native function " + name + ". Using default.");
-        output = defaultNative;
-      } 
-      return output;
-    }
-    
-    public void addPreprocessor(Function<String, JsonNode> preprocessor, String canonicalName, String... aliases) {
-      preprocessors.put(canonicalName.toLowerCase(), preprocessor);
-      for (String alias : aliases) {
-        preprocessors.put(alias.toLowerCase(), preprocessor);
-      }
-      canonicalNames.put(preprocessor, canonicalName);
-    }
-    public void addSanitizer(Function<String, String> sanitizer, String canonicalName, String... aliases) {
-      sanitizers.put(canonicalName.toLowerCase(), sanitizer);
-      for (String alias : aliases) {
-        sanitizers.put(alias.toLowerCase(), sanitizer);
-      }
-      canonicalNames.put(sanitizer, canonicalName);
-    }
-    public void addNative(Function<String, Optional<String>> nativeFn, String canonicalName, String... aliases) {
-      natives.put(canonicalName.toLowerCase(), nativeFn);
-      for (String alias : aliases) {
-        natives.put(alias.toLowerCase(), nativeFn);
-      }
-      canonicalNames.put(nativeFn, canonicalName);
-    }
-    
-    public String getCanonicalName(Function<?,?> fn) {
-      return canonicalNames.getOrDefault(fn, "function");
-    }
-    
-    public Function<String, Optional<String>> buildKeywordNative(Collection<String> keywords) {
-      return str -> keywords.stream().filter( str::equalsIgnoreCase ).findAny();
-    }
   }
 }
