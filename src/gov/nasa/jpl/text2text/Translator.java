@@ -426,6 +426,7 @@ public class Translator {
       .filter( ref -> !realRefs.contains(ref) )
       .map( instantiationRegistrar::get )
       .flatMap( Collection::stream )
+      .filter( tm -> !tm.getTemplate().map( Template::isIncomplete ).orElse( false ) )
       .map( TemplateMatch::getInstance )
       .flatMap( optStream() )
       .collect( Collectors.joining("\n\n") );

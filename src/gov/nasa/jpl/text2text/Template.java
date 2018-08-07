@@ -130,6 +130,18 @@ class Template {
   }
   
   /**
+   * If this is true, this template should only be used composed inside of other templates,
+   * never as a stand-alone construct.
+   * This is denoted by making the PARENT_REFERENCE field "Required"
+   * @return True if this Template's PARENT_REFERENCE field is present and required
+   */
+  public Boolean isIncomplete() {
+    return Optional.ofNullable( fields.get("PARENT_REFERENCE") )
+        .map( f -> f.isNecessary )
+        .orElse( false );
+  }
+  
+  /**
    * @return All the Templates in the enclosing TranslationDescription.
    */
   public Collection<Template> getAllTemplates() {

@@ -225,6 +225,7 @@ Template: String Expression
 Fields:
 
 PARENT_REFERENCE
+    (Required)
     REF.^
 trigger
     (Trigger, Raw "stringEscape")
@@ -263,6 +264,7 @@ Template: Simple String Expression
 Fields:
 
 PARENT_REFERENCE
+    (Required)
     REF.^
 value
     (Trigger, Raw "stringEscape")
@@ -576,11 +578,14 @@ PARENT_REFERENCE
         ?(.targetID = REF.^.^.id)
         .sourceID
 triggerExpression
-    (Trigger, Raw "stringEscape")
+    (Trigger, Raw)
     DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#Trigger")
         .attributes[*]
             ?(.name = "expression")
+triggerId
+    (Raw "stringEscape")
+    REF.^.^.id
 machineName
     (Required)
     DOC.entities[*]
@@ -603,7 +608,7 @@ machineName
                 .sourceID) // ID of StateVariable that instantiates that StateMachine
         .name // name of that StateVariable. Phew.
 expression
-    (Body)
+    (Body, Required)
 
 
 
@@ -823,7 +828,7 @@ goal activity_%ctr (tp begin, tp end) { // name = "%activityName", description =
 Fields:
 
 PARENT_REFERENCE
-    (Raw)
+    (Required, Raw)
     DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#Activity")
         ?(.id =
@@ -1289,7 +1294,7 @@ Template: Precedes Constraint
 Fields:
 
 PARENT_REFERENCE
-    (Raw)
+    (Required, Raw)
     DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#Rule")
         ?(.id =
