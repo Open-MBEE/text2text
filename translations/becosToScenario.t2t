@@ -334,6 +334,18 @@ Template: State Machine Command Declaration
 mode %machineName_trigger ( %cmds )
 Fields:
 
+// TEMP - once the global scoping issue with machine triggers is resolved,
+// change the parent reference to DOC to load it into the SystemClass Template,
+// and update the SystemClass template to have a slot for these
+PARENT_REFERENCE
+    DOC.relationships[*]
+        ?(.metamodelRelationshipID ~= ".*#Describes")
+        ?(.sourceID = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasCodomain")
+                ?(.targetID = REF)
+                .sourceID) // ID of StateVariable that instantiates this StateMachine
+        .targetID // ID of Component that contains that StateVariable
 machineId
     (Trigger)
     DOC.entities[*]
@@ -476,7 +488,7 @@ guard // done as a sub-template to catch string expression
         ?(.metamodelEntityID ~= ".*#Guard")
 trigger
     (Body ", ")
-    (")//, %s") // FIXME - triggers cause compilation issues further down the line, so omitting for now - need to fix the ScenarioToK file, which will require fixing global resolutions in Scenario
+    (", %s")
     DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#Trigger")
 rawName
@@ -702,8 +714,8 @@ rawId
 
 
 Template: Goal State Constraint
-goal %goalName (tp begin, tp end) { // name = "%activityName", description = "%activityDescription", uuid = "%activityId"
-    assert from begin to end %stateVar==%qualifier%state // name = "%rawName", description = "%description", uuid = "%stateConstraintId"
+goal activity_%ctr_%stateVar_%state (tp begin, tp end) { // name = "%activityName", description = "%activityDescription", uuid = "%activityId"
+    assert from begin to end %stateVar==%qualifier%state before end // name = "%rawName", description = "%description", uuid = "%stateConstraintId"
 }
 Fields:
 
@@ -722,9 +734,8 @@ stateConstraintId
     DOC.entities[*]
         ?(.metamodelEntityID ~= ".*#StateConstraint")
         .id
-goalName
+ctr
     (Required, Raw)
-    ("activity_%s")
     REF.^.__COUNTER // the number added by the counter preprocessor
 stateVar
     (Required)
@@ -806,7 +817,7 @@ activityDescription
 
 
 Template: Schedulable Constraint
-goal %goalName (tp begin, tp end) { // name = "%activityName", description = "%activityDescription", uuid = "%activityId"
+goal activity_%ctr (tp begin, tp end) { // name = "%activityName", description = "%activityDescription", uuid = "%activityId"
     assert from begin to end %expression // name = "%rawName", description = "%description", uuid = "%rawId"
 }
 Fields:
@@ -829,9 +840,8 @@ expressionAttr
         ?(.metamodelEntityID ~= ".*#SchedulableConstraint")
         .attributes[*]
             ?(.name = "expression") // use expression attr to capture string expression's parent reference
-goalName
+ctr
     (Required, Raw)
-    ("activity_%s")
     REF.^.^.__COUNTER // number added by counter preprocessor
 expression
     (Body)
@@ -903,7 +913,7 @@ description
 
 
 Template: Elaboration
-elaborate instance_SystemClass.instance_%component.%goalName(%beginTP%generatedBeginTP, %endTP%generatedEndTP)
+elaborate instance_SystemClass.instance_%component.activity_%ctr%stateVar%state(%beginTP%generatedBeginTP, %endTP%generatedEndTP)
 Fields:
 
 PARENT_REFERENCE
@@ -938,10 +948,38 @@ component
                         ])
                 .d3attributes.behavingElementID)
         .name
-goalName
+ctr
     (Required, Raw)
-    ("activity_%s")
     REF.^.__COUNTER
+stateVar
+    ("_%s")
+    DOC.entities[*]
+        ?(.id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#HasCodomain")
+                ?(.targetID = 
+                    DOC.relationships[*]
+                        ?(.metamodelRelationshipID ~= ".*#HasState")
+                        ?(.targetID =
+                            DOC.relationships[*]
+                                ?(.metamodelRelationshipID ~= ".*#Specifies")
+                                ?(.sourceID = REF)
+                                .targetID) // ID of State specified by StateConstraint
+                        .sourceID) // ID of StateMachine containing that state
+                .sourceID) // ID of StateVariable that instantiates that StateMachine
+        .attributes[*]
+            ?(.name = "symbol")
+            .value // symbol for that StateVariable, name of the state machine instance in translation
+state
+    ("_%s")
+    DOC.entities[*]
+        ?(.id = 
+            DOC.relationships[*]
+                ?(.metamodelRelationshipID ~= ".*#Specifies")
+                ?(.sourceID = REF)
+                .targetID)
+        .name
+
 beginTP // if a declared timepoint exists, use it
     (Raw)
     ("tp_%s")

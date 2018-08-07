@@ -10,7 +10,7 @@ Next, clone this repository, preferably into `~/git/text2text` (other locations 
 
  * `grammars/make.sh` - to build the Antlr Lexer/Parser
  * `mvn package` - to compile
- * `scripts/translate` - to test
+ * `scripts/t2t` - to test
 
 If that executes and complains that no input file was specified, you've installed the software correctly and are good to go.
 
@@ -18,4 +18,8 @@ The most likely source of errors are dependency failures. Make sure that Antlr4 
 
 ## Description and Usage
 
-<!-- TODO - fill this out, with examples -->
+To run a basic translation, execute the `scripts/t2t` script with the following options:
+
+ * `-td <translation-file>` - the Translation Description file (usually a `.translation` file, found in the `translations/` directory), which describes the transformation
+ * `-in <input-file>` - the input file to be translated
+ * `-out <output-file>` - the output file to be written to
