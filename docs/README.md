@@ -20,6 +20,6 @@ The most likely source of errors are dependency failures. Make sure that Antlr4 
 
 To run a basic translation, execute the `scripts/t2t` script with the following options:
 
- * `-td <translation-file>` - the Translation Description file (usually a `.translation` file, found in the `translations/` directory), which describes the transformation
+ * `-td <translation-file>` - the Translation Description file (usually a `.t2t` file, found in the `translations/` directory), which describes the transformation
  * `-in <input-file>` - the input file to be translated
  * `-out <output-file>` - the output file to be written to
