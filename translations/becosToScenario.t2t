@@ -720,7 +720,7 @@ rawId
 
 Template: Goal State Constraint
 goal activity_%ctr_%stateVar_%state (tp begin, tp end) { // name = "%activityName", description = "%activityDescription", uuid = "%activityId"
-    assert from begin to end %stateVar==%qualifier%state before end // name = "%rawName", description = "%description", uuid = "%stateConstraintId"
+    assert from begin to end %stateVar==%qualifier%state %isTransition// name = "%rawName", description = "%description", uuid = "%stateConstraintId"
 }
 Fields:
 
@@ -787,6 +787,9 @@ state
                 ?(.sourceID = REF)
                 .targetID)
         .name
+isTransition
+    ("before end ")
+    REF?(!?(.^.goal_type = "maintenance"))
 rawName
     (Raw "stringEscape")
     REF.^.name
