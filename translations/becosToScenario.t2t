@@ -1124,7 +1124,7 @@ tp %timePoint%generatedTimePoint // name = "%rawName%altName", description = "%d
 Fields:
 
 PARENT_REFERENCE
-    (Required, Raw)
+    // (Required, Raw)
     DOC.relationships[*]
         ?(.metamodelRelationshipID ~= ".*#Contains")
         ?(.targetID = 
