@@ -98,6 +98,7 @@ description
 
 
 
+(NoDuplicates)
 Template: State Variable
 sv %varType %varName // name = "%rawName", description = "%description", uuid = "%varId", units = "%units"
 Fields:
@@ -276,6 +277,7 @@ value
 
 
 
+(NoDuplicates)
 Template: State Machine
 mode %machineName ( %modes ) // name = "%rawName", description = "%description", uuid = "%machineId"
     %transitions
@@ -332,6 +334,7 @@ description
 
 
 
+(NoDuplicates)
 Template: State Machine Command Declaration
 mode %machineName_trigger ( %cmds )
 Fields:
@@ -392,6 +395,7 @@ cmds
 // TODO: related to comment for State Machine Command Declaration,
 // once we can distinguish duplicate sets of commands, need to
 // change the machineName query to choose the appropriate name
+(NoDuplicates)
 Template: State Machine Command Variable
 sv %machineName_trigger %machineName_cmd
 Fields:
@@ -568,6 +572,7 @@ expression
     (Body)
 
 
+(NoDuplicates)
 Template: Transition Trigger
 %machineName_cmd == %machineName_trigger.%expression
 Fields:
@@ -1282,13 +1287,18 @@ altId
                         ?(.sourceID = REF).targetID,
                         ?(.targetID = REF).sourceID
                     ] ))) // demand that no TimePoint matches
-    REF
-        *( DOC.entities[*]
-            ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
-            .d3attributes[
-                ?(.sourceID = REF).targetID,
-                ?(.targetID = REF).sourceID
-            ] )
+    // FIXME: actually make the lookups deterministic in order, so this hack isn't necessary
+    DOC.entities[*] // standardizes order, so that we don't duplicate generated timepoints with different ids.
+        ?(.id =
+            REF
+                *( DOC.entities[*]
+                    ?(.metamodelEntityID ~= ".*#EqualsTemporalConstraint")
+                    .d3attributes[
+                        ?(.sourceID = REF).targetID,
+                        ?(.targetID = REF).sourceID
+                    ] ))
+        .id
+        
 
 
 
